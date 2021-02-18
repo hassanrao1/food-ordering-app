@@ -1,0 +1,25 @@
+.App {
+  text-align: center;
+}
+
+.card{
+  padding: 10px;
+  border: 1px solid gray;
+  border-radius: 10px;
+  margin: 10px;
+}
+.navbar ul{
+  display:flex;
+  justify-content: flex-end;
+ 
+}
+.navbar ul >li {
+  list-style-type: none;
+  padding: 0 10px;
+  
+}
+.navbar ul >li>a{
+  text-decoration: none;
+  color: black;
+  
+}
