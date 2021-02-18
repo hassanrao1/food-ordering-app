@@ -27,7 +27,7 @@ const CssTextField = withStyles({
 
 const Signup = () => {
   //   const url = "http://localhost:5000";
-  const url = "https://food-mania.herokuapp.com/";
+  const url = "https://food-mania.herokuapp.com";
 
   const history = useHistory();
   let name = useRef();
