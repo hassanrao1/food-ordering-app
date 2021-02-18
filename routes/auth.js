@@ -1,16 +1,16 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt-inzi");
-const { userModel} = require("../dbrepo/index");
+const { userModel } = require("../dbrepo/index");
 const api = express.Router();
-const { SERVER_SECRET} = require("../core");
+const { SERVER_SECRET } = require("../core");
 // const client = process.env.POSTMARK;
 console.log(userModel);
 
 // Signup
 api.post("/signup", (req, res, next) => {
   // for postman
-  if (!req.body.userName || !req.body.userEmail || !req.body.userPassword) {
+  if (!req.body.name || !req.body.email || !req.body.password) {
     res.status(403).send(`
               please send name, email, password, phone and gender in json body.
               e.g:
@@ -23,29 +23,29 @@ api.post("/signup", (req, res, next) => {
     return;
   }
   // it will loop through database
-  userModel.findOne({ email: req.body.userEmail }, function (err, doc) {
+  userModel.findOne({ email: req.body.email }, function (err, doc) {
     if (!err && !doc) {
-      bcrypt
-        .stringToHash(req.body.userPassword)
-        .then(function (hashedPassword) {
-          var newUser = new userModel({
-            name: req.body.userName,
-            email: req.body.userEmail,
-            password: hashedPassword,
-          });
-          newUser.save((err, data) => {
-            if (!err) {
-              res.send({
-                message: "account created successfully",
-              });
-            } else {
-              console.log(err);
-              res.status(500).send({
-                message: "user create error, " + err,
-              });
-            }
-          });
+      bcrypt.stringToHash(req.body.password).then(function (hashedPassword) {
+        var newUser = new userModel({
+          name: req.body.name,
+          email: req.body.email,
+          password: hashedPassword,
         });
+        newUser.save((err, data) => {
+          if (!err) {
+            res.send({
+              status: 200,
+              doc: data,
+              message: "account created successfully",
+            });
+          } else {
+            console.log(err);
+            res.status(500).send({
+              message: "user create error, " + err,
+            });
+          }
+        });
+      });
     } else if (err) {
       res.status(500).send({
         message: "db error",
@@ -59,9 +59,26 @@ api.post("/signup", (req, res, next) => {
   });
 });
 
+api.post("/validateEmail", (req, res) => {
+  userModel.findOne({ email: req.body.email }, (err, data) => {
+    if (!err) {
+      res.send({
+        status: 200,
+        isFound: true,
+        data: data,
+      });
+    } else {
+      res.send({
+        status: 403,
+        isFound: false,
+      });
+    }
+  });
+});
+
 //   login
 api.post("/login", (req, res, next) => {
-  if (!req.body.currentEmail || !req.body.currentPassword) {
+  if (!req.body.email || !req.body.password) {
     res.status(403).send(`
               please send email and password in json body.
               e.g:
@@ -72,7 +89,7 @@ api.post("/login", (req, res, next) => {
     return;
   }
 
-  userModel.findOne({ email: req.body.currentEmail }, function (err, user) {
+  userModel.findOne({ email: req.body.email }, function (err, user) {
     if (err) {
       res.status(500).send({
         message: "an error occurred: " + JSON.stringify(err),
@@ -80,7 +97,7 @@ api.post("/login", (req, res, next) => {
     } else if (user) {
       // verify if current user password and database password is matched
       bcrypt
-        .varifyHash(req.body.currentPassword, user.password)
+        .varifyHash(req.body.password, user.password)
         .then((isMatched) => {
           if (isMatched) {
             console.log("password matched");
@@ -251,4 +268,3 @@ function getRandomArbitrary(min, max) {
 }
 
 module.exports = api;
-
