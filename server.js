@@ -9,7 +9,7 @@ const app = express();
 const server = http.createServer(app);
 const authRoutes = require("./routes/auth");
 
-app.use("/", express.static(path.resolve(path.join(__dirname, "./web/build"))));
+app.use("/", express.static(path.resolve(path.join(__dirname, "./web"))));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(
