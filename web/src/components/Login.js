@@ -1,13 +1,18 @@
 import React from "react";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import { Redirect, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { useGlobalState, useSetGlobalState } from "../globalState/GlobalState";
 
 const Login = () => {
-  //   const url = "http://localhost:5000";
+  // const url = "http://localhost:5000";
   const url = "https://food-mania.herokuapp.com";
 
   const history = useHistory();
+  const globalState = useGlobalState();
+  const setGlobalState = useSetGlobalState();
+
+  // console.log(globalState);
 
   let email = useRef();
   console.log(email);
@@ -29,9 +34,16 @@ const Login = () => {
     }).then(
       (response) => {
         console.log("response", response);
-        console.log("response doc", response.data.doc);
         alert(response.data.message);
-        history.push("/");
+        if (response.data.status === 200) {
+          history.push("/dashboard");
+          setGlobalState((prevState) => ({
+            ...prevState,
+            user: response.data.user,
+
+            isLoggedIn: !prevState.isLoggedIn,
+          }));
+        }
       },
       (error) => {
         alert("error", error);
@@ -49,17 +61,19 @@ const Login = () => {
       data: {
         email: validateEmail,
       },
-    }).then((res) => {
-      console.log("validation", res.data.isFound);
-      console.log("validation", res.data.data);
-      if (res.data.data === null) {
-        document.getElementById("validate").innerText = "email not found";
-        email.current.style.border = "1px solid red";
-      } else if (res.data.data) {
-        email.current.style.border = "1px solid green";
-        document.getElementById("validate").innerText = "";
-      }
-    });
+    })
+      .then((res) => {
+        console.log("validation", res.data.isFound);
+        console.log("validation", res.data.data);
+        if (res.data.data === null) {
+          document.getElementById("validate").innerText = "email not found";
+          email.current.style.border = "1px solid red";
+        } else if (res.data.data) {
+          email.current.style.border = "1px solid green";
+          document.getElementById("validate").innerText = "";
+        }
+      })
+      .catch((err) => err);
   }, [validateEmail]);
 
   return (

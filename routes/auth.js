@@ -118,6 +118,7 @@ api.post("/login", (req, res, next) => {
 
             res.send({
               message: "login success",
+              status: 200,
               user: {
                 name: user.name,
                 email: user.email,
