@@ -8,8 +8,8 @@ import {
 } from "../../globalState/GlobalState";
 
 const Login = () => {
-  const url = "http://localhost:5000";
-  // const url = "https://food-mania.herokuapp.com";
+  // const url = "http://localhost:5000";
+  const url = "https://food-mania.herokuapp.com";
 
   const history = useHistory();
   const globalState = useGlobalState();
