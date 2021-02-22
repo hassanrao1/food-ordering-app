@@ -2,11 +2,14 @@ import React from "react";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { useGlobalState, useSetGlobalState } from "../globalState/GlobalState";
+import {
+  useGlobalState,
+  useSetGlobalState,
+} from "../../globalState/GlobalState";
 
 const Login = () => {
-  // const url = "http://localhost:5000";
-  const url = "https://food-mania.herokuapp.com";
+  const url = "http://localhost:5000";
+  // const url = "https://food-mania.herokuapp.com";
 
   const history = useHistory();
   const globalState = useGlobalState();
@@ -21,7 +24,7 @@ const Login = () => {
   //   console.log(validation.current);
 
   let [validateEmail, setValidateEmail] = useState("");
-  const signup = () => {
+  const login = () => {
     // console.log(name, email, password);
 
     axios({
@@ -40,7 +43,6 @@ const Login = () => {
           setGlobalState((prevState) => ({
             ...prevState,
             user: response.data.user,
-
             isLoggedIn: !prevState.isLoggedIn,
           }));
         }
@@ -50,7 +52,6 @@ const Login = () => {
         console.log("error data", error.response);
       }
     );
-    return false;
   };
   useEffect(() => {
     console.log(validateEmail);
@@ -80,10 +81,9 @@ const Login = () => {
     <div>
       <h1>Login</h1>
       <form
-        noValidate
         onSubmit={(e) => {
           e.preventDefault();
-          signup();
+          login();
         }}
       >
         Email

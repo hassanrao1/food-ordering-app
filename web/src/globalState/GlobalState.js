@@ -11,6 +11,7 @@ export const GlobalStateProvider = ({ children }) => {
     user: null,
     darkTheme: true,
     isLoggedIn: false,
+    cart: [],
   });
   return (
     <div>

@@ -1,35 +1,59 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Link, Route } from "react-router-dom";
-import Dashboard from "../components/Dashboard";
-import Login from "../components/Login";
-import Signup from "../components/Signup";
+import Dashboard from "../components/Dashboard/Dashboard";
+import Login from "../components/Login/Login";
+import Signup from "../components/Signup/Signup";
 import { NotFound } from "../components/NotFound";
 import { useGlobalState, useSetGlobalState } from "../globalState/GlobalState";
-import { Home } from "../components/Home";
+import { Home } from "../components/Home/Home";
+import Cart from "../components/Cart/Cart";
+import "../index.css";
 
 export const AppRouter = () => {
   const globalState = useGlobalState();
   const setGlobalState = useSetGlobalState();
 
-  const themeStyle = {
-    backGroundColor: globalState.darkTheme ? "#333" : "#ccc",
-    color: globalState.darkTheme ? "#fff" : "black",
-  };
-
   // console.log(globalState, setGlobalState);
 
   return (
     <div>
-      <div>
-        {JSON.stringify(globalState)}
-        <button
-          style={themeStyle}
-          onClick={() =>
-            setGlobalState((prev) => ({ ...prev, darkTheme: !prev.darkTheme }))
-          }
-        >
-          Change Theme
-        </button>
+      {/* {JSON.stringify(globalState)}
+      <button
+        style={themeStyle}
+        onClick={() =>
+          setGlobalState((prev) => ({ ...prev, darkTheme: !prev.darkTheme }))
+        }
+      >
+        Change Theme
+      </button> */}
+      {globalState.isLoggedIn ? (
+        <Router>
+          <nav className="navbar">
+            <ul>
+              <li>
+                <Link to="/">Home</Link>
+              </li>
+              <li>
+                <Link to="/dashboard">Dashboard</Link>
+              </li>
+              <li>
+                <Link to="/cart">{globalState.cart.length} Cart</Link>
+              </li>
+            </ul>
+          </nav>
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route path="/dashboard">
+              <Dashboard />
+            </Route>
+            <Route path="/cart">
+              <Cart />
+            </Route>
+          </Switch>
+        </Router>
+      ) : (
         <Router>
           <nav className="navbar">
             <ul>
@@ -65,7 +89,7 @@ export const AppRouter = () => {
             </Route>
           </Switch>
         </Router>
-      </div>
+      )}
     </div>
   );
 };
