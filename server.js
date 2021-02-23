@@ -21,7 +21,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "*",
+    origin: ["http://localhost:3000", "*"],
     credentials: true,
   })
 );
@@ -68,13 +68,14 @@ app.use(function (req, res, next) {
   });
 });
 
-app.get("/dashboard", (req, res, next) => {
+app.get("/profile", (req, res, next) => {
   console.log("dashboard body", req.body);
-  console.log("dashboard body", req.headers.cookie);
+  console.log("dashboard body", req.body.jToken.id);
 
-  userModel.findOne(req.body.jToken.id, "email", function (err, data) {
+  userModel.findById(req.body.jToken.id, "email name", function (err, data) {
     if (!err) {
       res.send({
+        status: 200,
         userData: data,
       });
     } else {

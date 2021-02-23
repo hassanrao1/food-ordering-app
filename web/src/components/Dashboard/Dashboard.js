@@ -35,7 +35,7 @@ const Dashboard = () => {
         "https://www.kindpng.com/picc/m/30-302489_chicken-biryani-png-transparent-png.png",
     },
   ];
-  console.log(globalState);
+  console.log(globalState.user);
   return (
     <div>
       <h1>Welcome {globalState.user.name}</h1>

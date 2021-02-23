@@ -8,8 +8,8 @@ import {
 } from "../../globalState/GlobalState";
 
 const Login = () => {
-  // const url = "http://localhost:5000";
-  const url = "https://food-mania.herokuapp.com";
+  const url = "http://localhost:5000";
+  // const url = "https://food-mania.herokuapp.com";
 
   const history = useHistory();
   const globalState = useGlobalState();
@@ -42,7 +42,7 @@ const Login = () => {
           history.push("/dashboard");
           setGlobalState((prevState) => ({
             ...prevState,
-            user: response.data.user,
+            // user: response.data.user,
             isLoggedIn: !prevState.isLoggedIn,
           }));
         }

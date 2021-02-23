@@ -263,6 +263,10 @@ api.post("/forget-password-step-2", (req, res, next) => {
     }
   });
 });
+api.post("/logout", (req, res, next) => {
+  res.cookie("jToken", "");
+  res.send("logout success");
+});
 
 function getRandomArbitrary(min, max) {
   return Math.random() * (max - min) + min;
