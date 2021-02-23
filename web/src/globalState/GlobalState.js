@@ -16,7 +16,6 @@ export const GlobalStateProvider = ({ children }) => {
     isLoggedIn: false,
     cart: [],
   });
-  console.log(data);
 
   useEffect(() => {
     axios({
@@ -32,6 +31,7 @@ export const GlobalStateProvider = ({ children }) => {
             isLoggedIn: true,
           }));
         }
+        console.log(data);
       })
       .catch((err) => {
         console.log(err);
@@ -39,8 +39,8 @@ export const GlobalStateProvider = ({ children }) => {
           setData((prevState) => ({ ...prevState, isLoggedIn: false }));
         }
       });
-    return () => {
-      console.log("cleanup");
+      return () => {
+        console.log("cleanup");
     };
   }, []);
   return (

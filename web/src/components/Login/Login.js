@@ -6,6 +6,7 @@ import {
   useGlobalState,
   useSetGlobalState,
 } from "../../globalState/GlobalState";
+axios.defaults.withCredentials = true;
 
 const Login = () => {
   const url = "http://localhost:5000";

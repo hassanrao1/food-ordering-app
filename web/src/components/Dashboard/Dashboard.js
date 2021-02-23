@@ -35,10 +35,10 @@ const Dashboard = () => {
         "https://www.kindpng.com/picc/m/30-302489_chicken-biryani-png-transparent-png.png",
     },
   ];
-  console.log(globalState.user);
+  // console.log(globalState.user);
   return (
     <div>
-      <h1>Welcome {globalState.user.name}</h1>
+      <h1>Welcome </h1>
       {globalState.cart.map((v, i) => {
         return (
           <table key={i} border="1" cellSpacing="1">
