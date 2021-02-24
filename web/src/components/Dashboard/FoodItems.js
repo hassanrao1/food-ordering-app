@@ -5,13 +5,13 @@ import {
   useSetGlobalState,
 } from "../../globalState/GlobalState";
 
-const FoodItems = ({ name, amount, image, quantity }) => {
+const FoodItems = ({ name, amount, image, quantity,id,actualPrice }) => {
   const globalState = useGlobalState();
   const setGlobalState = useSetGlobalState();
   const [addedToCard, setAddedToCart] = useState(false);
   const [cartText, setCartText] = useState("Add to cart");
   const AddToCart = () => {
-    const items = { name: name, amount: amount, quantity: quantity };
+    const items = { name: name, amount: amount, quantity: quantity,id: id , actualPrice:actualPrice };
     setAddedToCart(true);
     setCartText("Added to your cart");
     setGlobalState((prevState) => ({

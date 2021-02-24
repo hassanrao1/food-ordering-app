@@ -12,7 +12,6 @@ const Cart = () => {
   const url = "http://localhost:5000";
   const globalState = useGlobalState();
   const setGlobalState = useSetGlobalState();
-  const [itemQuantity, setItemQuantity] = useState(1);
   const [enough, setEnough] = useState(false);
   const placeOrder = () => {
     axios({
@@ -36,14 +35,25 @@ const Cart = () => {
     // }
     console.log(e);
   };
-  const addItem = (e) => {
-    setItemQuantity(++e.quantity);
-    // if (quantity >= 2) {
-    //   setEnough(false);
-    // }
-    // e.amount++;
+  const addItem = (e,i) => {
+    // setItemQuantity(itemQuantity + 1);
+    globalState.cart.map((v,index,arr)=>{
+    if(v.name===arr[i].name)
+    {
+      var newValue = [...globalState.cart];
+      newValue[i].quantity+=1;
+      newValue[i].amount=newValue[i].actualPrice*newValue[i].quantity;
+      console.log("product price is=>",v);
+      console.log("our product name",globalState.cart[i].name)
+      // setGlobalState((prevValue)=>({...prevValue,cart:[...globalState.cart[i].quantity,globalState.cart[i].quantity+1]}));
+      setGlobalState((prevValue)=>({...prevValue , newValue})) 
+      console.log("new cart",globalState.cart);
+    }
+    })
 
-    console.log(++e.quantity);
+    
+    
+    // console.log(e);
   };
   // let calcAmount = (e) => {
   //   console.log(e);
@@ -72,8 +82,8 @@ const Cart = () => {
                   >
                     -
                   </Button>{" "}
-                  {itemQuantity}{" "}
-                  <Button variant="outline-info" onClick={() => addItem(v)}>
+                  {v.quantity}{" "}
+                  <Button variant="outline-info" onClick={() => addItem(v.id,i)}>
                     +
                   </Button>
                 </td>
