@@ -11,25 +11,26 @@ const authRoutes = require("./routes/auth");
 const jwt = require("jsonwebtoken");
 const { SERVER_SECRET } = require("./core/index");
 
-const { userModel } = require("./dbrepo/index");
-
+const { userModel, orderModel } = require("./dbrepo/index");
 
 app.use(bodyParser.json());
 app.use(morgan("dev"));
 
 app.use(cookieParser());
-app.use(cors({
-  origin: "http://localhost:3000",
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 
-app.use((req,res,next)=>{
+app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin: http://localhost:3000");
   res.header("Access-Control-Allow-Credentials: true");
   res.header("Access-Control-Allow-Methods: GET, POST");
   res.header("Access-Control-Allow-Headers: Content-Type, *");
   next();
-})
+});
 
 app.use("/", express.static(path.resolve(path.join(__dirname, "./web/build"))));
 
@@ -91,6 +92,43 @@ app.get("/profile", (req, res, next) => {
       });
     }
   });
+});
+
+app.post("/placeorder", (req, res) => {
+  console.log(req.body.order);
+  if (!req.body.order) {
+    res.status(403).send(`
+              please send order in array in json body.`);
+    return;
+  }
+  if (req.body.order === []) {
+    res.send({
+      status: 403,
+      message: "please add some items to cart to proceed",
+    });
+  } else {
+    userModel.findById(req.body.jToken.id, "email", (err, user) => {
+      if (!err) {
+        console.log("order user", user);
+
+        orderModel
+          .create({
+            orderDetails: req.body.order,
+          })
+          .then((data) => {
+            console.log("order placed", data);
+            res.send({
+              message: "your order has been placed",
+              email: user.email,
+              yourOrder: data,
+            });
+          })
+          .catch((err) => res.status(500).send("an error occurred" + err));
+      } else {
+        res.status(500).send("db error");
+      }
+    });
+  }
 });
 
 const PORT = process.env.PORT || 5000;

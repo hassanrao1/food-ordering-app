@@ -15,6 +15,7 @@ export const GlobalStateProvider = ({ children }) => {
     darkTheme: true,
     isLoggedIn: false,
     cart: [],
+    inCart: false,
   });
 
   useEffect(() => {
@@ -39,8 +40,8 @@ export const GlobalStateProvider = ({ children }) => {
           setData((prevState) => ({ ...prevState, isLoggedIn: false }));
         }
       });
-      return () => {
-        console.log("cleanup");
+    return () => {
+      console.log("cleanup");
     };
   }, []);
   return (

@@ -1,5 +1,11 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Link, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Link,
+  Route,
+  Redirect,
+} from "react-router-dom";
 import Dashboard from "../components/Dashboard/Dashboard";
 import Login from "../components/Login/Login";
 import Signup from "../components/Signup/Signup";
@@ -76,17 +82,11 @@ export const AppRouter = () => {
               <li>
                 <Link to="/login">Login</Link>
               </li>
-              <li>
-                <Link to="/dashboard">Dashboard</Link>
-              </li>
             </ul>
           </nav>
           <Switch>
             <Route exact path="/">
-              <Home />
-            </Route>
-            <Route path="/dashboard">
-              {globalState.isLoggedIn ? <Dashboard /> : <NotFound />}
+              <Login />
             </Route>
             <Route path="/signup">
               <Signup />
@@ -94,8 +94,8 @@ export const AppRouter = () => {
             <Route path="/login">
               <Login />
             </Route>
-            <Route path="/dashboard">
-              <Dashboard />
+            <Route path="*">
+              <Redirect to="/" />
             </Route>
           </Switch>
         </Router>

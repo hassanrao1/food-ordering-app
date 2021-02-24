@@ -45,14 +45,17 @@ var userSchema = new mongoose.Schema({
   createdOn: { type: Date, default: Date.now },
 });
 
-
+var orderSchema = new mongoose.Schema({
+  orderDetails: Array,
+});
 
 // https://mongoosejs.com/docs/models.html
 var userModel = mongoose.model("users", userSchema);
-
+var orderModel = mongoose.model("orders", orderSchema);
 
 module.exports = {
   userModel: userModel,
- 
+  orderModel: orderModel,
+
   // otherModels: OtherModels
 };
