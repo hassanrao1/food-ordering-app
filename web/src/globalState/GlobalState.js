@@ -16,6 +16,7 @@ export const GlobalStateProvider = ({ children }) => {
     isLoggedIn: false,
     cart: [],
     inCart: false,
+    totalAmount: 0,
   });
 
   useEffect(() => {

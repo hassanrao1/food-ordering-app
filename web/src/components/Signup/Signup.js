@@ -89,7 +89,7 @@ const Signup = () => {
   }, [validateEmail]);
 
   return (
-    <div>
+    <div className="text-center">
       <h1>Sign Up</h1>
       <form
         noValidate

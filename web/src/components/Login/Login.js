@@ -79,7 +79,7 @@ const Login = () => {
   }, [validateEmail]);
 
   return (
-    <div>
+    <div className="text-center">
       <h1>Login</h1>
       <form
         onSubmit={(e) => {

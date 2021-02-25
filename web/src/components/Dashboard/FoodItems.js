@@ -5,18 +5,36 @@ import {
   useSetGlobalState,
 } from "../../globalState/GlobalState";
 
-const FoodItems = ({ name, amount, image, quantity,id,actualPrice }) => {
+const FoodItems = ({
+  name,
+  amount,
+  image,
+  quantity,
+  id,
+  actualPrice,
+  halfKg,
+  totalAmount,
+}) => {
   const globalState = useGlobalState();
   const setGlobalState = useSetGlobalState();
   const [addedToCard, setAddedToCart] = useState(false);
   const [cartText, setCartText] = useState("Add to cart");
   const AddToCart = () => {
-    const items = { name: name, amount: amount, quantity: quantity,id: id , actualPrice:actualPrice };
+    const items = {
+      name: name,
+      amount: amount,
+      quantity: quantity,
+      id: id,
+      actualPrice: actualPrice,
+      halfKg: halfKg,
+    };
+
     setAddedToCart(true);
     setCartText("Added to your cart");
     setGlobalState((prevState) => ({
       ...prevState,
       cart: [...globalState.cart, items],
+      totalAmount: totalAmount,
     }));
   };
   console.log(globalState.cart.length);
@@ -25,7 +43,8 @@ const FoodItems = ({ name, amount, image, quantity,id,actualPrice }) => {
     <div className="foodCard">
       <img src={image} alt="food" height="150px" width="150px" />
       <h2>{name}</h2>
-      <p>{amount}rs</p>
+      <p>{actualPrice}rs</p>
+
       <button disabled={addedToCard} onClick={AddToCart}>
         {cartText}
       </button>
