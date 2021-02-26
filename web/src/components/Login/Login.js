@@ -38,6 +38,7 @@ const Login = () => {
     }).then(
       (response) => {
         console.log("response", response);
+        console.log("role", response.data.user.role);
         alert(response.data.message);
         if (response.data.status === 200) {
           history.push("/dashboard");
@@ -45,6 +46,7 @@ const Login = () => {
             ...prevState,
             // user: response.data.user,
             isLoggedIn: !prevState.isLoggedIn,
+            role: response.data.user.role,
           }));
         }
       },

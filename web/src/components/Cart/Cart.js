@@ -108,10 +108,10 @@ const Cart = () => {
             <th>Amount</th>
           </tr>
         </thead>
-        {globalState.cart.map((v, i) => {
-          return (
-            <tbody key={i}>
-              <tr>
+        <tbody>
+          {globalState.cart.map((v, i) => {
+            return (
+              <tr key={i}>
                 <td>{v.name}</td>
                 <td>
                   <Button
@@ -137,9 +137,9 @@ const Cart = () => {
                   <button onClick={() => delItem(v.id)}>Delete</button>
                 </td>
               </tr>
-            </tbody>
-          );
-        })}
+            );
+          })}
+        </tbody>
       </Table>
       <div className="d-flex justify-content-end">
         <Card style={{ width: "18rem" }}>

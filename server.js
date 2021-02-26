@@ -59,6 +59,7 @@ app.use(function (req, res, next) {
             id: decodedData.id,
             name: decodedData.name,
             email: decodedData.email,
+            role: decodedData.role,
           },
           SERVER_SECRET
         );
@@ -80,18 +81,22 @@ app.get("/profile", (req, res, next) => {
   console.log("dashboard body", req.body);
   console.log("dashboard body", req.body.jToken.id);
 
-  userModel.findById(req.body.jToken.id, "email name", function (err, data) {
-    if (!err) {
-      res.send({
-        status: 200,
-        userData: data,
-      });
-    } else {
-      res.status(500).send({
-        message: "server error",
-      });
+  userModel.findById(
+    req.body.jToken.id,
+    "email name role",
+    function (err, data) {
+      if (!err) {
+        res.send({
+          status: 200,
+          userData: data,
+        });
+      } else {
+        res.status(500).send({
+          message: "server error",
+        });
+      }
     }
-  });
+  );
 });
 
 app.post("/placeorder", (req, res) => {
@@ -129,6 +134,30 @@ app.post("/placeorder", (req, res) => {
       }
     });
   }
+});
+app.get("/orders", (req, res) => {
+  userModel.findById(
+    req.body.jToken.id,
+    "email name role",
+    function (err, data) {
+      if (!err) {
+        orderModel.find((err, orders) => {
+          if (!err) {
+            res.send({
+              status: 200,
+              orders: orders,
+            });
+          } else {
+            res.status(401).send("no orders");
+          }
+        });
+      } else {
+        res.status(500).send({
+          message: "server error",
+        });
+      }
+    }
+  );
 });
 
 const PORT = process.env.PORT || 5000;

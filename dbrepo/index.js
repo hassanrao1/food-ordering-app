@@ -41,8 +41,9 @@ var userSchema = new mongoose.Schema({
   name: String,
   email: String,
   password: String,
-  // tweets: [{ tweet: String }],
+  role : String,
   createdOn: { type: Date, default: Date.now },
+
 });
 
 var orderSchema = new mongoose.Schema({

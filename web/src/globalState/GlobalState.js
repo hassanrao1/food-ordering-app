@@ -17,7 +17,10 @@ export const GlobalStateProvider = ({ children }) => {
     cart: [],
     inCart: false,
     totalAmount: 0,
+    role: null,
+    allOrders: [],
   });
+  console.log("data", data);
 
   useEffect(() => {
     axios({
@@ -31,9 +34,9 @@ export const GlobalStateProvider = ({ children }) => {
             ...prevState,
             user: res.data.userData,
             isLoggedIn: true,
+            role: res.data.userData.role,
           }));
         }
-        console.log(data);
       })
       .catch((err) => {
         console.log(err);

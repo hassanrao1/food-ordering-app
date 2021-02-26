@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Switch,
   Link,
   Route,
@@ -15,6 +15,7 @@ import { Home } from "../components/Home/Home";
 import Cart from "../components/Cart/Cart";
 import "../index.css";
 import axios from "axios";
+import Admin from "../components/Admin/Admin";
 
 export const AppRouter = () => {
   const url = "http://localhost:5000";
@@ -34,7 +35,7 @@ export const AppRouter = () => {
 
   return (
     <div>
-      {globalState.isLoggedIn ? (
+      {/* {globalState.isLoggedIn ? (
         <Router>
           <nav className="navbar">
             <ul>
@@ -66,6 +67,9 @@ export const AppRouter = () => {
             </Route>
             <Route path="/cart">
               <Cart />
+            </Route>
+            <Route path="*">
+              <Redirect to="/" />
             </Route>
           </Switch>
         </Router>
@@ -99,7 +103,104 @@ export const AppRouter = () => {
             </Route>
           </Switch>
         </Router>
-      )}
+      )} */}
+      {!globalState.isLoggedIn ? (
+        <Router>
+          <nav className="navbar">
+            <ul>
+              <li>
+                <Link to="/">Home</Link>
+              </li>
+              <li>
+                <Link to="/signup">signup</Link>
+              </li>
+              <li>
+                <Link to="/login">Login</Link>
+              </li>
+            </ul>
+          </nav>
+          <Switch>
+            <Route exact path="/">
+              <Login />
+            </Route>
+            <Route path="/signup">
+              <Signup />
+            </Route>
+            <Route path="/login">
+              <Login />
+            </Route>
+            <Route path="*">
+              <Redirect to="/" />
+            </Route>
+          </Switch>
+        </Router>
+      ) : null}
+      {globalState.isLoggedIn && globalState.role === "user" ? (
+        <Router>
+          <nav className="navbar">
+            <ul>
+              <li>
+                <Link to="/">Home</Link>
+              </li>
+              <li>
+                <Link to="/dashboard">Dashboard</Link>
+              </li>
+              <li>
+                <Link to="/cart">{globalState.cart.length} Cart</Link>
+              </li>
+              <li>
+                <button
+                  onClick={handleLogout}
+                  style={{ border: "none", background: "#fff" }}
+                >
+                  Logout
+                </button>
+              </li>
+            </ul>
+          </nav>
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route path="/dashboard">
+              <Dashboard />
+            </Route>
+            <Route path="/cart">
+              <Cart />
+            </Route>
+            <Route path="*">
+              <Redirect to="/" />
+            </Route>
+          </Switch>
+        </Router>
+      ) : null}
+      {globalState.isLoggedIn && globalState.role === "admin" ? (
+        <Router>
+          <nav className="navbar">
+            <ul>
+              <li>
+                <Link to="/admin">Admin Panel</Link>
+              </li>
+              <li>
+                <button
+                  onClick={handleLogout}
+                  style={{ border: "none", background: "#fff" }}
+                >
+                  Logout
+                </button>
+              </li>
+            </ul>
+          </nav>
+          <Switch>
+            <Route path="/admin">
+              <Admin />
+            </Route>
+            <Route path="*">
+              <Redirect to="/admin" />
+            </Route>
+          </Switch>
+        </Router>
+      ) : null}
     </div>
   );
 };

@@ -5,7 +5,6 @@ const { userModel } = require("../dbrepo/index");
 const api = express.Router();
 const { SERVER_SECRET } = require("../core");
 // const client = process.env.POSTMARK;
-console.log(userModel);
 
 // Signup
 api.post("/signup", (req, res, next) => {
@@ -30,6 +29,7 @@ api.post("/signup", (req, res, next) => {
           name: req.body.name,
           email: req.body.email,
           password: hashedPassword,
+          role: req.body.role ? req.body.role : "user",
         });
         newUser.save((err, data) => {
           if (!err) {
@@ -107,6 +107,7 @@ api.post("/login", (req, res, next) => {
                 id: user._id,
                 name: user.name,
                 email: user.email,
+                role: user.role,
               },
               SERVER_SECRET
             );
@@ -122,6 +123,7 @@ api.post("/login", (req, res, next) => {
               user: {
                 name: user.name,
                 email: user.email,
+                role: user.role,
               },
             });
           } else {
