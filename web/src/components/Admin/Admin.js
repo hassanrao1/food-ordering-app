@@ -26,9 +26,12 @@ const Admin = () => {
       .catch((err) => console.log(err));
   }, []);
   let mapOrders = globalState.allOrders.map((v, i) => {
-    v.orderDetails.map((e, a) => {
-      return e;
-    });
+    // v.orderDetails.map((e, a) => {
+    //   // console.log(e);
+    //   return e
+
+    // });
+    return v.orderDetails
   });
 
   console.log(mapOrders);
@@ -36,7 +39,9 @@ const Admin = () => {
   return (
     <div>
       <h1>welcome to admin panel</h1>
-      <Accordion>
+      {mapOrders.map((q,v)=>{
+        return(
+<Accordion>
         <Card>
           <Accordion.Toggle
             as={Card.Header}
@@ -46,6 +51,7 @@ const Admin = () => {
             New Order
           </Accordion.Toggle>
           <Accordion.Collapse eventKey="0">
+            
             <Table striped bordered hover>
               <thead>
                 <tr>
@@ -56,7 +62,7 @@ const Admin = () => {
                 </tr>
               </thead>
               <tbody>
-                {console.log(mapOrders)}
+                {/* {console.log(mapOrders)} */}
                 <tr>
                   <td>1</td>
                   <td>2</td>
@@ -68,6 +74,9 @@ const Admin = () => {
           </Accordion.Collapse>
         </Card>
       </Accordion>
+        )
+      })}
+      
     </div>
   );
 };
