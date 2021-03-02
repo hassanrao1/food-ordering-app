@@ -78,7 +78,7 @@ const Cart = () => {
       }
     });
   };
-  const delItem = (e) => {
+  const delItem = (e,a) => {
     console.log("running", e);
     let totalAmount = globalState.cart.reduce((previousValue, currentValue) => {
       return {
@@ -89,10 +89,11 @@ const Cart = () => {
     let del = globalState.cart.filter((item) => {
       return item.id !== e;
     });
+    let delValue = totalAmount.amount -a
     setGlobalState((prevState) => ({
       ...prevState,
       cart: del,
-      totalAmount: totalAmount.amount,
+      totalAmount: delValue,
     }));
     console.log(globalState.cart);
   };
@@ -134,7 +135,7 @@ const Cart = () => {
                 </td>
                 <td>{v.amount}rs</td>
                 <td>
-                  <button onClick={() => delItem(v.id)}>Delete</button>
+                  <button onClick={() => delItem(v.id,v.amount)}>Delete</button>
                 </td>
               </tr>
             );

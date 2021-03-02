@@ -26,57 +26,74 @@ const Admin = () => {
       .catch((err) => console.log(err));
   }, []);
   let mapOrders = globalState.allOrders.map((v, i) => {
-    // v.orderDetails.map((e, a) => {
-    //   // console.log(e);
-    //   return e
-
-    // });
     return v.orderDetails
   });
 
-  console.log(mapOrders);
-  console.log(globalState.allOrders);
+  // console.log(mapOrders);
+  // console.log(globalState.allOrders);
   return (
     <div>
       <h1>welcome to admin panel</h1>
-      {mapOrders.map((q,v)=>{
-        return(
-<Accordion>
-        <Card>
-          <Accordion.Toggle
-            as={Card.Header}
-            eventKey="0"
-            style={{ color: "red", cursor: "pointer" }}
-          >
-            New Order
-          </Accordion.Toggle>
-          <Accordion.Collapse eventKey="0">
-            
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Username</th>
-                </tr>
-              </thead>
-              <tbody>
-                {/* {console.log(mapOrders)} */}
-                <tr>
-                  <td>1</td>
-                  <td>2</td>
-                  <td>3</td>
-                  <td>@mdo</td>
-                </tr>
-              </tbody>
-            </Table>
-          </Accordion.Collapse>
-        </Card>
-      </Accordion>
+      {/* 
+      {globalState.allOrders.map(({ orderDetails }, index) => {
+        return (
+         <div key={index}>
+           <h1>
+             New order
+           </h1>
+           { orderDetails.map((value , i )=>{
+             return(
+              <div key={i}>
+                {value.name}
+                {value.amount}
+              </div>
+           )})}
+          </div>
         )
+      })} */}
+      {globalState.allOrders.map(({ orderDetails }, index) => {
+
+        return <Accordion key={index}>
+          <Card>
+            <Accordion.Toggle
+              as={Card.Header}
+              eventKey="0"
+              style={{ color: "red", cursor: "pointer" }}
+            >
+              New Order
+    </Accordion.Toggle>
+            <Accordion.Collapse eventKey="0">
+
+              <Table striped bordered hover>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Actual Price</th>
+                    <th>Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {orderDetails.map((value, index) => {
+                    return (
+                      <tr>
+                        <td>{value.name}</td>
+                        <td>{value.quantity}</td>
+                        <td>{value.actualPrice}</td>
+                        <td>{value.amount}</td>
+                      </tr>
+                    )
+                  })}
+                  {/* {console.log(mapOrders)} */}
+
+                </tbody>
+              </Table>
+            </Accordion.Collapse>
+          </Card>
+        </Accordion>
       })}
-      
+
+
     </div>
   );
 };
