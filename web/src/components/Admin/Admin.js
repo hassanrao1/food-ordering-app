@@ -21,16 +21,15 @@ const Admin = () => {
         setGlobalState((prevState) => ({
           ...prevState,
           allOrders: res.data.orders,
+          // totalAmount:res.data.orderTotal
         }));
       })
       .catch((err) => console.log(err));
   }, []);
-  let mapOrders = globalState.allOrders.map((v, i) => {
-    return v.orderDetails
-  });
+  
 
   // console.log(mapOrders);
-  // console.log(globalState.allOrders);
+  console.log(globalState.allOrders);
   return (
     <div>
       <h1>welcome to admin panel</h1>
@@ -51,7 +50,7 @@ const Admin = () => {
           </div>
         )
       })} */}
-      {globalState.allOrders.map(({ orderDetails }, index) => {
+      {globalState.allOrders.map(({orderDetails,orderTotal}, index) => {
 
         return <Accordion key={index}>
           <Card>
@@ -71,6 +70,7 @@ const Admin = () => {
                     <th>Quantity</th>
                     <th>Actual Price</th>
                     <th>Amount</th>
+                    
                   </tr>
                 </thead>
                 <tbody>
@@ -84,9 +84,14 @@ const Admin = () => {
                       </tr>
                     )
                   })}
-                  {/* {console.log(mapOrders)} */}
-
                 </tbody>
+                <tfoot>
+                  <tr>
+                    <th colSpan='3'>Total Amount</th>
+                    <td>{orderTotal}</td>
+                  </tr>
+                </tfoot>
+                
               </Table>
             </Accordion.Collapse>
           </Card>

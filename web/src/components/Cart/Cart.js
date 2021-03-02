@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 import { Table, Button, Card } from "react-bootstrap";
 import {
@@ -9,6 +9,10 @@ import axios from "axios";
 import e from "cors";
 
 const Cart = () => {
+
+  let address = useRef()
+  let phone = useRef()
+  let remarks = useRef()
   const url = "http://localhost:5000";
   const globalState = useGlobalState();
   const setGlobalState = useSetGlobalState();
@@ -19,11 +23,15 @@ const Cart = () => {
       url: `${url}/placeorder`,
       data: {
         order: globalState.cart,
+        total:globalState.totalAmount
+
       },
     })
       .then((res) => {
         console.log(res.data.message);
-        console.log(res.data.yourOrder);
+        console.log(res.data.data);
+        console.log(res.data.data.orderDetails);
+        console.log(res.data.data.orderTotal);
       })
       .catch((err) => console.log(err));
   };
@@ -148,19 +156,22 @@ const Cart = () => {
             <Card.Title className="text-left">Order Details</Card.Title>
 
             <Card.Text>
-              Total Amount:{" "}
+              Total Amount:{" "} {globalState.totalAmount}rs
+              <input ref={address} type='text'required placeholder="Your Address"/>
+              <input ref={phone} type='text' required placeholder="Your Phone"/>
+              <input ref={remarks} type='text' required placeholder="Your Remarks"/>
               <span className="text-right p-4 ">
-                {globalState.totalAmount}rs
+               
               </span>
+              <button onClick={placeOrder}>place order</button>
             </Card.Text>
           </Card.Body>
         </Card>
       </div>
-      <button onClick={placeOrder}>place order</button>
+      
     </div>
   );
 
-  // return <h1>hello</h1>;
 };
 
 export default Cart;

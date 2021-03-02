@@ -48,6 +48,12 @@ var userSchema = new mongoose.Schema({
 
 var orderSchema = new mongoose.Schema({
   orderDetails: Array,
+  orderTotal:Number,
+  name:String,
+  phone:String,
+  email:String,
+  address:String,
+  remarks:String
 });
 
 // https://mongoosejs.com/docs/models.html
