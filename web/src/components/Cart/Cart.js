@@ -1,18 +1,16 @@
 import React, { useRef, useState } from "react";
 
-import { Table, Button, Card } from "react-bootstrap";
+import { Table, Button, Card, Form } from "react-bootstrap";
 import {
   useGlobalState,
   useSetGlobalState,
 } from "../../globalState/GlobalState";
 import axios from "axios";
-import e from "cors";
 
 const Cart = () => {
-
-  let address = useRef()
-  let phone = useRef()
-  let remarks = useRef()
+  let address = useRef();
+  let phone = useRef();
+  let remarks = useRef();
   const url = "http://localhost:5000";
   const globalState = useGlobalState();
   const setGlobalState = useSetGlobalState();
@@ -23,17 +21,22 @@ const Cart = () => {
       url: `${url}/placeorder`,
       data: {
         order: globalState.cart,
-        total:globalState.totalAmount
-
+        total: globalState.totalAmount,
+        address: address.current.value,
+        phone: phone.current.value,
+        remarks: remarks.current.value,
       },
     })
       .then((res) => {
+        alert(res.data.message);
         console.log(res.data.message);
         console.log(res.data.data);
-        console.log(res.data.data.orderDetails);
-        console.log(res.data.data.orderTotal);
       })
       .catch((err) => console.log(err));
+
+    console.log(address.current.value);
+    console.log(phone.current.value);
+    console.log(remarks.current.value);
   };
 
   const removeItem = (e, i) => {
@@ -86,7 +89,7 @@ const Cart = () => {
       }
     });
   };
-  const delItem = (e,a) => {
+  const delItem = (e, a) => {
     console.log("running", e);
     let totalAmount = globalState.cart.reduce((previousValue, currentValue) => {
       return {
@@ -97,7 +100,7 @@ const Cart = () => {
     let del = globalState.cart.filter((item) => {
       return item.id !== e;
     });
-    let delValue = totalAmount.amount -a
+    let delValue = totalAmount.amount - a;
     setGlobalState((prevState) => ({
       ...prevState,
       cart: del,
@@ -112,9 +115,10 @@ const Cart = () => {
         <thead>
           <tr>
             <th>Item Name</th>
+            <th>Price</th>
             <th>Quantity</th>
-            <th>Weight</th>
             <th>Amount</th>
+            <th>Remove</th>
           </tr>
         </thead>
         <tbody>
@@ -122,6 +126,7 @@ const Cart = () => {
             return (
               <tr key={i}>
                 <td>{v.name}</td>
+                <td>{v.actualPrice}</td>
                 <td>
                   <Button
                     variant="outline-info"
@@ -135,15 +140,12 @@ const Cart = () => {
                     +
                   </Button>
                 </td>
-                <td>
-                  <select id="weight">
-                    <option value="KG">KG</option>
-                    <option value="Half KG">HALF KG</option>
-                  </select>
-                </td>
+
                 <td>{v.amount}rs</td>
                 <td>
-                  <button onClick={() => delItem(v.id,v.amount)}>Delete</button>
+                  <button onClick={() => delItem(v.id, v.amount)}>
+                    Delete
+                  </button>
                 </td>
               </tr>
             );
@@ -155,23 +157,50 @@ const Cart = () => {
           <Card.Body>
             <Card.Title className="text-left">Order Details</Card.Title>
 
-            <Card.Text>
-              Total Amount:{" "} {globalState.totalAmount}rs
-              <input ref={address} type='text'required placeholder="Your Address"/>
-              <input ref={phone} type='text' required placeholder="Your Phone"/>
-              <input ref={remarks} type='text' required placeholder="Your Remarks"/>
-              <span className="text-right p-4 ">
-               
-              </span>
-              <button onClick={placeOrder}>place order</button>
+            <Card.Text as="h6">
+              Total Amount: {globalState.totalAmount}rs
+              <Form
+                className="pt-2"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  placeOrder();
+                }}
+              >
+                <Form.Group controlId="formBasicEmail">
+                  <Form.Control
+                    type="text"
+                    ref={address}
+                    placeholder="Your Address"
+                    required
+                  />
+                </Form.Group>
+                <Form.Group controlId="formBasicEmail">
+                  <Form.Control
+                    type="text"
+                    ref={phone}
+                    placeholder="Your Phone Number"
+                    required
+                  />
+                </Form.Group>
+                <Form.Group controlId="exampleForm.ControlTextarea1">
+                  <Form.Control
+                    as="textarea"
+                    ref={remarks}
+                    rows={3}
+                    placeholder="Remarks Or any additional Note"
+                    required
+                  />
+                </Form.Group>
+                <Button variant="primary" type="submit">
+                  Place Order
+                </Button>
+              </Form>
             </Card.Text>
           </Card.Body>
         </Card>
       </div>
-      
     </div>
   );
-
 };
 
 export default Cart;

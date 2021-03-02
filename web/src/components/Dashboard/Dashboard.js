@@ -21,6 +21,7 @@ const Dashboard = () => {
       id: 1,
       actualPrice: 100,
       lessThanZero: false,
+      inCart: false,
     },
     {
       foodName: "Pizza",
@@ -32,6 +33,7 @@ const Dashboard = () => {
       id: 2,
       actualPrice: 500,
       lessThanZero: false,
+      inCart: false,
     },
     {
       foodName: "Cake",
@@ -43,6 +45,7 @@ const Dashboard = () => {
       id: 3,
       actualPrice: 300,
       lessThanZero: false,
+      inCart: false,
     },
     {
       foodName: "Biryani",
@@ -54,6 +57,7 @@ const Dashboard = () => {
       id: 4,
       actualPrice: 120,
       lessThanZero: false,
+      inCart: false,
     },
   ];
   let totalAmount = foodItems.reduce((previousValue, currentValue) => {
@@ -78,6 +82,7 @@ const Dashboard = () => {
               id={food.id}
               halfKg={food.halfKg}
               key={i}
+              inCart={food.inCart}
               totalAmount={totalAmount.amount}
             />
           );

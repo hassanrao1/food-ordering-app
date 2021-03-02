@@ -14,6 +14,7 @@ const FoodItems = ({
   actualPrice,
   halfKg,
   totalAmount,
+  inCart,
 }) => {
   const globalState = useGlobalState();
   const setGlobalState = useSetGlobalState();
@@ -27,6 +28,7 @@ const FoodItems = ({
       id: id,
       actualPrice: actualPrice,
       halfKg: halfKg,
+      inCart: !inCart,
     };
 
     setAddedToCart(true);
@@ -37,7 +39,7 @@ const FoodItems = ({
       totalAmount: totalAmount,
     }));
   };
-  console.log(globalState.cart.length);
+  console.log(globalState.cart);
 
   return (
     <div className="foodCard">

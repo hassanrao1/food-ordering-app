@@ -15,7 +15,6 @@ export const GlobalStateProvider = ({ children }) => {
     darkTheme: true,
     isLoggedIn: false,
     cart: [],
-    inCart: false,
     totalAmount: 0,
     role: null,
     allOrders: [],

@@ -106,42 +106,40 @@ app.post("/placeorder", (req, res) => {
               please send order in array in json body.`);
     return;
   }
-  
-    userModel.findById(req.body.jToken.id, "email", (err, user) => {
-      if (!err) {
-        console.log("order user", user);
 
-        orderModel
-          .create({
-            orderDetails: req.body.order,
-            orderTotal:req.body.total,
-            name:user.name,
-            email:user.email,
-            phone:req.body.phone,
-            address:req.body.address,
-            remarks:req.body.remarks
-          })
-          .then((data) => {
-            console.log("order placed", data);
-            res.send({
-              message: "your order has been placed",
-              // yourOrder: data.orderDetails,
-              // amount:data.orderTotal,
-              // name:user.name,
-              // email:user.email,
-              // phone:req.body.phone,
-              // address:req.body.address,
-              // remarks:req.body.remarks
-              data:data
+  userModel.findById(req.body.jToken.id, "email name", (err, user) => {
+    if (!err) {
+      console.log("order user", user);
 
-            });
-          })
-          .catch((err) => res.status(500).send("an error occurred" + err));
-      } else {
-        res.status(500).send("db error");
-      }
-    });
-  
+      orderModel
+        .create({
+          orderDetails: req.body.order,
+          orderTotal: req.body.total,
+          name: user.name,
+          email: user.email,
+          phone: req.body.phone,
+          address: req.body.address,
+          remarks: req.body.remarks,
+        })
+        .then((data) => {
+          console.log("order placed", data);
+          res.send({
+            message: "your order has been placed",
+            // yourOrder: data.orderDetails,
+            // amount:data.orderTotal,
+            // name:user.name,
+            // email:user.email,
+            // phone:req.body.phone,
+            // address:req.body.address,
+            // remarks:req.body.remarks
+            data: data,
+          });
+        })
+        .catch((err) => res.status(500).send("an error occurred" + err));
+    } else {
+      res.status(500).send("db error");
+    }
+  });
 });
 app.get("/orders", (req, res) => {
   userModel.findById(
@@ -153,9 +151,8 @@ app.get("/orders", (req, res) => {
           if (!err) {
             res.send({
               status: 200,
-              orders:orders
+              orders: orders,
               // orderTotal:orders.orderTotal
-
             });
           } else {
             res.status(401).send("no orders");
