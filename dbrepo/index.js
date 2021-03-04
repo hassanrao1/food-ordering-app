@@ -41,28 +41,38 @@ var userSchema = new mongoose.Schema({
   name: String,
   email: String,
   password: String,
-  role : String,
+  role: String,
   createdOn: { type: Date, default: Date.now },
-
 });
 
 var orderSchema = new mongoose.Schema({
   orderDetails: Array,
-  orderTotal:Number,
-  name:String,
-  phone:String,
-  email:String,
-  address:String,
-  remarks:String
+  orderTotal: Number,
+  name: String,
+  phone: String,
+  email: String,
+  address: String,
+  remarks: String,
+});
+var productSchema = new mongoose.Schema({
+  foodName: String,
+  amount: Number,
+  quantity: Number,
+  image: String,
+  actualPrice: Number,
+  lessThanZero: Boolean,
+  inCart: Boolean,
 });
 
 // https://mongoosejs.com/docs/models.html
 var userModel = mongoose.model("users", userSchema);
 var orderModel = mongoose.model("orders", orderSchema);
+var productModel = mongoose.model("products", productSchema);
 
 module.exports = {
   userModel: userModel,
   orderModel: orderModel,
+  productModel: productModel,
 
   // otherModels: OtherModels
 };

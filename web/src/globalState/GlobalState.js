@@ -12,14 +12,14 @@ export const GlobalStateProvider = ({ children }) => {
 
   const [data, setData] = useState({
     user: null,
-    darkTheme: true,
     isLoggedIn: false,
     cart: [],
     totalAmount: 0,
     role: null,
     allOrders: [],
+    userOrders: [],
   });
-  console.log("data", data);
+  // console.log("data", data);
 
   useEffect(() => {
     axios({
