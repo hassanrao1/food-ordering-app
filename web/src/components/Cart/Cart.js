@@ -31,12 +31,12 @@ const Cart = () => {
         alert(res.data.message);
         console.log(res.data.message);
         console.log(res.data.data);
+        setGlobalState((prevState) => ({ ...prevState, cart: [] }));
+        address.current.value = "";
+        phone.current.value = "";
+        remarks.current.value = "";
       })
       .catch((err) => console.log(err));
-
-    console.log(address.current.value);
-    console.log(phone.current.value);
-    console.log(remarks.current.value);
   };
 
   const removeItem = (e, i) => {
@@ -90,7 +90,7 @@ const Cart = () => {
     });
   };
   const delItem = (e, a) => {
-    console.log("running", e);
+    console.log("running", e, a);
     let totalAmount = globalState.cart.reduce((previousValue, currentValue) => {
       return {
         amount: previousValue.amount + currentValue.amount,
@@ -108,6 +108,8 @@ const Cart = () => {
     }));
     console.log(globalState.cart);
   };
+
+  console.log(globalState.products);
 
   return (
     <div>
@@ -158,7 +160,8 @@ const Cart = () => {
             <Card.Title className="text-left">Order Details</Card.Title>
 
             <Card.Text as="h6">
-              Total Amount: {globalState.totalAmount}rs
+              Total Amount: {globalState.totalAmount}
+              rs
               <Form
                 className="pt-2"
                 onSubmit={(e) => {

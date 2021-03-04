@@ -29,52 +29,56 @@ const Orders = () => {
   return (
     <div>
       <h1>Your orders</h1>
-      {globalState.userOrders.map(
-        ({ orderDetails, orderTotal, remarks, address, phone }, index) => {
-          console.log(remarks, orderTotal);
-          return (
-            <div key={index}>
-              <div>
-                <h3>Order#{index}</h3>
-              </div>
-              <Table striped bordered hover size="sm">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Quantity</th>
-                    <th>Amount</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {orderDetails.map((v, i) => {
-                    return (
-                      <tr key={i}>
-                        <td>{v.name}</td>
-                        <td>{v.quantity}</td>
-                        <td>{v.amount}</td>
+      <div className="d-flex flex-column-reverse">
+        {globalState.userOrders.map(
+          ({ orderDetails, orderTotal, remarks, address, phone }, index) => {
+            console.log(remarks, orderTotal);
+            return (
+              <div key={index}>
+                <div>
+                  <h3>Order#{index}</h3>
+                </div>
+                <div>
+                  <Table striped bordered hover size="sm">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Quantity</th>
+                        <th>Amount</th>
                       </tr>
-                    );
-                  })}
-                  <tr>
-                    <td colSpan="2"></td>
-                  </tr>
-                </tbody>
+                    </thead>
+                    <tbody>
+                      {orderDetails.map((v, i) => {
+                        return (
+                          <tr key={i}>
+                            <td>{v.name}</td>
+                            <td>{v.quantity}</td>
+                            <td>{v.amount}</td>
+                          </tr>
+                        );
+                      })}
+                      <tr>
+                        <td colSpan="2"></td>
+                      </tr>
+                    </tbody>
 
-                <tfoot>
-                  <tr>
-                    <th colSpan="2">Total Amount</th>
-                    <td>{orderTotal}</td>
-                  </tr>
-                  <tr>
-                    <th colSpan="2">Remarks</th>
-                    <td>{remarks}</td>
-                  </tr>
-                </tfoot>
-              </Table>
-            </div>
-          );
-        }
-      )}
+                    <tfoot>
+                      <tr>
+                        <th colSpan="2">Total Amount</th>
+                        <td>{orderTotal}</td>
+                      </tr>
+                      <tr>
+                        <th colSpan="2">Remarks</th>
+                        <td>{remarks}</td>
+                      </tr>
+                    </tfoot>
+                  </Table>
+                </div>
+              </div>
+            );
+          }
+        )}
+      </div>
     </div>
   );
 };

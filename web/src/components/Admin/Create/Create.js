@@ -1,9 +1,10 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Form, Button } from "react-bootstrap";
 import axios from "axios";
 
 const Create = () => {
   const url = "http://localhost:5000";
+
   let productName = useRef();
   let productAmount = useRef();
   const upload = () => {
@@ -26,9 +27,14 @@ const Create = () => {
       .then((res) => {
         alert(res.data.message);
         console.log("upload success", res.data);
+        productName.current.value = "";
+        productAmount.current.value = "";
+        document.getElementById("prodImg").value = "";
+        // setGlobalState((prevState)=>({...prevState,products:}))
       })
       .catch((err) => console.log(err));
   };
+
   return (
     <div className="d-flex justify-content-center flex-column  align-items-center ">
       <h1>Add product</h1>

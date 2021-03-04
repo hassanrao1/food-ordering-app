@@ -18,6 +18,7 @@ export const GlobalStateProvider = ({ children }) => {
     role: null,
     allOrders: [],
     userOrders: [],
+    products: [],
   });
   // console.log("data", data);
 

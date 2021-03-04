@@ -253,6 +253,7 @@ app.post("/upload", upload.any(), (req, res) => {
                         console.log("product data", data);
                         res.send({
                           message: "product added",
+                          products: data,
                         });
                       });
                   } else {
@@ -265,10 +266,10 @@ app.post("/upload", upload.any(), (req, res) => {
               // // optional because it is gonna delete automatically sooner or later
               // // recommended because you may run out of space if you dont do so, and if your files are sensitive it is simply not safe in server folder
               // try {
-              //     fs.unlinkSync(req.files[0].path)
-              //     //file removed
+              //   fs.unlinkSync(req.files[0].path);
+              //   //file removed
               // } catch (err) {
-              //     console.error(err)
+              //   console.error(err);
               // }
               // res.send({
               //   message: "ok",
@@ -282,6 +283,28 @@ app.post("/upload", upload.any(), (req, res) => {
       }
     }
   );
+});
+
+app.get("/Products", (req, res) => {
+  userModel.findById(req.body.jToken.id, "email name", function (err, data) {
+    if (!err) {
+      productModel.find((err, products) => {
+        if (!err) {
+          res.send({
+            status: 200,
+            products: products,
+            // orderTotal:orders.orderTotal
+          });
+        } else {
+          res.status(401).send("no products");
+        }
+      });
+    } else {
+      res.status(500).send({
+        message: "server error",
+      });
+    }
+  });
 });
 
 const PORT = process.env.PORT || 5000;
