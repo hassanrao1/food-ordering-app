@@ -25,7 +25,7 @@ const Orders = () => {
       .catch((err) => console.log(err));
   }, []);
   console.log(globalState);
-
+  // this.setState({ :  });
   return (
     <div>
       <h1>Your orders</h1>
