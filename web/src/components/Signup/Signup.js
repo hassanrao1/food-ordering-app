@@ -1,29 +1,7 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
+import { Button, Card, Form } from "react-bootstrap";
 import { Redirect, useHistory } from "react-router-dom";
-import { withStyles } from "@material-ui/core/styles";
-
-import TextField from "@material-ui/core/TextField";
-
-const CssTextField = withStyles({
-  root: {
-    "& label.Mui-focused": {
-      color: "green",
-    },
-
-    "& .MuiOutlinedInput-root": {
-      "& fieldset": {
-        borderColor: "blue",
-      },
-      "&:hover fieldset": {
-        borderColor: "black",
-      },
-      "&.Mui-focused fieldset": {
-        borderColor: "green",
-      },
-    },
-  },
-})(TextField);
 
 const Signup = () => {
   const url = "http://localhost:5000";
@@ -90,7 +68,7 @@ const Signup = () => {
 
   return (
     <div className="text-center">
-      <h1>Sign Up</h1>
+      {/* <h1>Sign Up</h1>
       <form
         noValidate
         onSubmit={(e) => {
@@ -98,34 +76,6 @@ const Signup = () => {
           signup();
         }}
       >
-        {/* <CssTextField
-          id="custom-css-standard-input"
-          label="Name"
-          ref={name}
-          variant="outlined"
-          required
-        />
-        <br />
-        <CssTextField
-          id="custom-css-standard-input"
-          label="Email"
-          type="email"
-          ref={email}
-          required
-          variant="outlined"
-          onChange={(e) => setValidateEmail(e.target.value)}
-        />
-        <br />
-        <CssTextField
-          id="custom-css-standard-input"
-          label="password"
-          type="password"
-          ref={password}
-          variant="outlined"
-          required
-        />
-        <br />
-        <button>Submit</button> */}
         Name: <input type="text" ref={name} required /> <br />
         Email
         <input
@@ -140,7 +90,54 @@ const Signup = () => {
         <input type="password" ref={password} required />
         <br />
         <button>Submit</button>
-      </form>
+      </form> */}
+      <Card style={{ width: "20rem", margin: "0 auto" }} className="p-4 mt-4">
+        <h1>Sign Up</h1>
+        <Card.Body>
+          <Form
+            onSubmit={(e) => {
+              e.preventDefault();
+              signup();
+            }}
+          >
+            <Form.Group>
+              <Form.Control
+                type="text"
+                placeholder="Normal text"
+                ref={name}
+                required
+              />
+            </Form.Group>
+            <Form.Group controlId="formBasicEmail">
+              <Form.Control
+                type="email"
+                placeholder="Enter email"
+                ref={email}
+                required
+                onChange={(e) => setValidateEmail(e.target.value)}
+              />
+              <Form.Text
+                className="text-muted"
+                id="validate"
+                className="float-right"
+              ></Form.Text>
+            </Form.Group>
+
+            <Form.Group controlId="formBasicPassword">
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                ref={password}
+                required
+              />
+            </Form.Group>
+
+            <Button variant="primary" type="submit" block>
+              Submit
+            </Button>
+          </Form>
+        </Card.Body>
+      </Card>
     </div>
   );
 };

@@ -50,6 +50,7 @@ const Create = () => {
             type="text"
             ref={productName}
             placeholder="Product Name"
+            required
           />
         </Form.Group>
         <Form.Group>
@@ -58,10 +59,11 @@ const Create = () => {
             type="text"
             ref={productAmount}
             placeholder="Product Amount"
+            required
           />
         </Form.Group>
         <Form.Group>
-          <Form.File id="prodImg" label="Upload Image" />
+          <Form.File id="prodImg" label="Upload Image" required />
         </Form.Group>
         <Button variant="primary" type="submit" className="w-100">
           Add

@@ -53,6 +53,8 @@ var orderSchema = new mongoose.Schema({
   email: String,
   address: String,
   remarks: String,
+  status: String,
+  createdOn: { type: Date, default: Date.now },
 });
 var productSchema = new mongoose.Schema({
   foodName: String,
@@ -62,6 +64,7 @@ var productSchema = new mongoose.Schema({
   actualPrice: Number,
   lessThanZero: Boolean,
   inCart: Boolean,
+  createdOn: { type: Date, default: Date.now },
 });
 
 // https://mongoosejs.com/docs/models.html

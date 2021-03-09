@@ -112,7 +112,8 @@ const Cart = () => {
   console.log(globalState.products);
 
   return (
-    <div>
+    <div className="d-flex flex-column p-3 ">
+      <h3 className="text-center">Order Information</h3>
       <Table striped bordered hover size="sm" className="text-center">
         <thead>
           <tr>

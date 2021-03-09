@@ -1,4 +1,4 @@
-import { Table, Button, Card, Accordion } from "react-bootstrap";
+import { Table, Button, Card, Accordion, NavItem } from "react-bootstrap";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
@@ -7,6 +7,7 @@ import {
 } from "../../globalState/GlobalState";
 
 const Admin = () => {
+  const [checkStatus, setCheckStatus] = useState(false);
   const url = "http://localhost:5000";
   const globalState = useGlobalState();
   const setGlobalState = useSetGlobalState();
@@ -25,88 +26,134 @@ const Admin = () => {
         }));
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [checkStatus]);
+  const acceptOrder = (id) => {
+    console.log(id);
+    axios({
+      method: "patch",
+      url: `${url}/acceptOrder`,
+      data: {
+        id: id,
+      },
+    }).then((res) => {
+      console.log(res);
+      setCheckStatus(true);
+    });
+  };
 
   // console.log(mapOrders);
   console.log(globalState.allOrders);
+  const pendingOrders = globalState.allOrders.filter((getStatus) => {
+    return getStatus.status === "pending";
+  });
+
+  console.log(pendingOrders);
   return (
     <div>
-      <h1>welcome to admin panel</h1>
-      <div className="d-flex flex-column-reverse">
-        {globalState.allOrders.map(
-          (
-            { orderDetails, orderTotal, address, email, phone, remarks, name },
-            index
-          ) => {
-            return (
-              <Accordion key={index}>
-                <Card>
-                  <Accordion.Toggle
-                    as={Card.Header}
-                    eventKey="0"
-                    style={{ color: "red", cursor: "pointer" }}
-                  >
-                    New Order
-                  </Accordion.Toggle>
-                  <Accordion.Collapse eventKey="0">
-                    <div className="p-4">
-                      <h4>Order Details</h4>
-                      <div>
-                        <Table striped bordered hover size="sm">
-                          <thead>
-                            <tr>
-                              <th>Name</th>
-                              <th>Quantity</th>
-                              <th>Actual Price</th>
-                              <th>Amount</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {orderDetails.map((value, index) => {
-                              return (
-                                <tr key={index}>
-                                  <td>{value.name}</td>
-                                  <td>{value.quantity}</td>
-                                  <td>{value.actualPrice}</td>
-                                  <td>{value.amount}</td>
-                                </tr>
-                              );
-                            })}
-                          </tbody>
-                          <tfoot>
-                            <tr>
-                              <th colSpan="3">Total Amount</th>
-                              <td>{orderTotal}</td>
-                            </tr>
-                          </tfoot>
-                        </Table>
+      <h1>welcome to Dashboard</h1>
+      {pendingOrders.length > 0 ? (
+        <div className="d-flex flex-column-reverse">
+          {pendingOrders.map(
+            (
+              {
+                orderDetails,
+                orderTotal,
+                address,
+                email,
+                phone,
+                remarks,
+                name,
+                _id,
+                status,
+              },
+              index
+            ) => {
+              return (
+                <Accordion key={index}>
+                  <Card>
+                    <Accordion.Toggle
+                      as={Card.Header}
+                      eventKey="0"
+                      style={{ color: "red", cursor: "pointer" }}
+                    >
+                      New Order
+                    </Accordion.Toggle>
+                    <Accordion.Collapse eventKey="0">
+                      <div className="p-4">
+                        <h4>Order Details</h4>
+                        <div>
+                          <Table striped bordered hover size="sm">
+                            <thead>
+                              <tr>
+                                <th>Name</th>
+                                <th>Quantity</th>
+                                <th>Actual Price</th>
+                                <th>Amount</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {orderDetails.map((value, index) => {
+                                return (
+                                  <tr key={index}>
+                                    <td>{value.name}</td>
+                                    <td>{value.quantity}</td>
+                                    <td>{value.actualPrice}</td>
+                                    <td>{value.amount}</td>
+                                  </tr>
+                                );
+                              })}
+                            </tbody>
+                            <h4>User Details</h4>
+                            <tfoot>
+                              <tr>
+                                <th>Total Amount</th>
+                                <td colSpan="3">{orderTotal}</td>
+                              </tr>
+                              <tr>
+                                <th>Status</th>
+                                <td colSpan="3">{status}</td>
+                              </tr>
+                              <tr>
+                                <th>Name</th>
+                                <td colSpan="3">{name}</td>
+                              </tr>
+                              <tr>
+                                <th>Email</th>
+                                <td colSpan="3">{email}</td>
+                              </tr>
+                              <tr>
+                                <th>Address</th>
+                                <td colSpan="3">{address}</td>
+                              </tr>
+                              <tr>
+                                <th>Phone Number</th>
+                                <td colSpan="3">{phone}</td>
+                              </tr>
+                              <tr>
+                                <th>Remarks</th>
+                                <td colSpan="3">{remarks}</td>
+                              </tr>
+                            </tfoot>
+                          </Table>
+                          <Button
+                            className="float-right"
+                            onClick={() => acceptOrder(_id)}
+                            variant="success"
+                          >
+                            Accept
+                          </Button>
+                        </div>
                       </div>
-                      <h4>User Details</h4>
-                      <div className="p-3">
-                        <strong>Name : </strong>
-                        <span>{name}</span>
-                        <br />
-                        <strong>Email : </strong>
-                        <span>{email}</span>
-                        <br />
-                        <strong>Address : </strong>
-                        <span>{address}</span>
-                        <br />
-                        <strong>Phone Number : </strong>
-                        <span>{phone}</span>
-                        <br />
-                        <strong>Remarks : </strong>
-                        <span>{remarks}</span>
-                        <br />
-                      </div>
-                    </div>
-                  </Accordion.Collapse>
-                </Card>
-              </Accordion>
-            );
-          }
-        )}
-      </div>
+                    </Accordion.Collapse>
+                  </Card>
+                </Accordion>
+              );
+            }
+          )}
+        </div>
+      ) : (
+        "No Orders"
+      )}
     </div>
   );
 };

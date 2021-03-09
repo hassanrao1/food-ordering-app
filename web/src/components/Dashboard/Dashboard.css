@@ -3,13 +3,5 @@
   flex-wrap: wrap;
 }
 .foodCard {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid gray;
-  width: 200px;
-  border-radius: 10px;
   margin: 10px auto;
-  padding: 20px;
 }

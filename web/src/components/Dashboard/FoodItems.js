@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Card, Button } from "react-bootstrap";
 import "./Dashboard.css";
 import {
   useGlobalState,
@@ -18,7 +19,7 @@ const FoodItems = ({
 }) => {
   const globalState = useGlobalState();
   const setGlobalState = useSetGlobalState();
-  const [addedToCard, setAddedToCart] = useState(false);
+  const [addedToCard, setAddedToCart] = useState(inCart);
   const [cartText, setCartText] = useState("Add to cart");
   const AddToCart = () => {
     const items = {
@@ -42,15 +43,22 @@ const FoodItems = ({
   console.log(globalState.cart);
 
   return (
-    <div className="foodCard">
-      <img src={image} alt="food" height="150px" width="150px" />
-      <h2>{name}</h2>
-      <p>{actualPrice}rs</p>
-
-      <button disabled={addedToCard} onClick={AddToCart}>
-        {cartText}
-      </button>
-    </div>
+    <Card style={{ width: "18rem" }} className="foodCard text-center">
+      <Card.Img variant="top" src={image} height="150px" />
+      <Card.Body>
+        <Card.Title>{name}</Card.Title>
+        <Card.Text>{actualPrice}rs</Card.Text>
+        <Card.Text>
+          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Minus et
+          iste suscipit officiis tempora ad ea, voluptate totam labore
+          laudantium ex eum quidem asperiores unde similique numquam eligendi
+          maiores dolorum.
+        </Card.Text>
+        <Button variant="primary" disabled={addedToCard} onClick={AddToCart}>
+          {cartText}
+        </Button>
+      </Card.Body>
+    </Card>
   );
 };
 

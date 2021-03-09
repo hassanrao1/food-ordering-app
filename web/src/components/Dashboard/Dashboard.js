@@ -89,7 +89,9 @@ const Dashboard = () => {
   console.log(globalState);
   return (
     <div>
-      {globalState.user && <h1>Welcome {globalState.user.name} </h1>}
+      {globalState.user && (
+        <h1 className="text-center">Welcome {globalState.user.name} </h1>
+      )}
 
       <div className="foodContainer">
         {globalState.products.map((food, i) => {

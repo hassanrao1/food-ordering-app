@@ -6,6 +6,7 @@ import {
   useGlobalState,
   useSetGlobalState,
 } from "../../globalState/GlobalState";
+import { Button, Card, Form } from "react-bootstrap";
 axios.defaults.withCredentials = true;
 
 const Login = () => {
@@ -82,8 +83,8 @@ const Login = () => {
 
   return (
     <div className="text-center">
-      <h1>Login</h1>
-      <form
+      {/* <h1>Login</h1> */}
+      {/* <form
         onSubmit={(e) => {
           e.preventDefault();
           login();
@@ -102,7 +103,47 @@ const Login = () => {
         <input type="password" ref={password} required />
         <br />
         <button>Submit</button>
-      </form>
+      </form> */}
+      <Card style={{ width: "20rem", margin: "0 auto" }} className="p-4 mt-4">
+        <h1>Login</h1>
+        <Card.Body>
+          <Form
+            onSubmit={(e) => {
+              e.preventDefault();
+              login();
+            }}
+          >
+            <Form.Group controlId="formBasicEmail">
+              <Form.Control
+                type="email"
+                placeholder="Enter email"
+                type="email"
+                ref={email}
+                required
+                onChange={(e) => setValidateEmail(e.target.value)}
+              />
+              <Form.Text
+                className="text-muted"
+                id="validate"
+                className="float-right"
+              ></Form.Text>
+            </Form.Group>
+
+            <Form.Group controlId="formBasicPassword">
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                ref={password}
+                required
+              />
+            </Form.Group>
+
+            <Button variant="primary" type="submit" block>
+              Login
+            </Button>
+          </Form>
+        </Card.Body>
+      </Card>
     </div>
   );
 };

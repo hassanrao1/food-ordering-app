@@ -143,18 +143,12 @@ app.post("/placeorder", (req, res) => {
           phone: req.body.phone,
           address: req.body.address,
           remarks: req.body.remarks,
+          status: "pending",
         })
         .then((data) => {
           console.log("order placed", data);
           res.send({
             message: "your order has been placed",
-            // yourOrder: data.orderDetails,
-            // amount:data.orderTotal,
-            // name:user.name,
-            // email:user.email,
-            // phone:req.body.phone,
-            // address:req.body.address,
-            // remarks:req.body.remarks
             data: data,
           });
         })
@@ -302,6 +296,35 @@ app.get("/Products", (req, res) => {
     } else {
       res.status(500).send({
         message: "server error",
+      });
+    }
+  });
+});
+app.patch("/acceptOrder", (req, res, next) => {
+  userModel.find({ email: req.body.jToken.email }, (err, user) => {
+    if (!err) {
+      orderModel.findById({ _id: req.body.id }, (err, data) => {
+        if (data) {
+          data.updateOne({ status: "accepted" }, {}, (err, updated) => {
+            if (updated) {
+              res.status(200).send({
+                message: "Order accepted",
+              });
+            } else {
+              res.status(501).send({
+                message: "server error",
+              });
+            }
+          });
+        } else {
+          res.status(403).send({
+            message: "Could not find the order",
+          });
+        }
+      });
+    } else {
+      res.status(501).send({
+        message: "user could not be found",
       });
     }
   });

@@ -13,11 +13,13 @@ import { NotFound } from "../components/NotFound";
 import { useGlobalState, useSetGlobalState } from "../globalState/GlobalState";
 import { Home } from "../components/Home/Home";
 import Cart from "../components/Cart/Cart";
+import { Navbar, Nav } from "react-bootstrap";
 import "../index.css";
 import axios from "axios";
 import Admin from "../components/Admin/Admin";
 import Orders from "../components/Orders/Orders";
 import Create from "../components/Admin/Create/Create";
+import RecentOrders from "../components/Admin/RecentOrders";
 
 export const AppRouter = () => {
   const url = "http://localhost:5000";
@@ -70,7 +72,7 @@ export const AppRouter = () => {
       ) : null}
       {globalState.isLoggedIn && globalState.role === "user" ? (
         <Router>
-          <nav className="navbar">
+          <nav className="navbar" bg="light" variant="light">
             <ul>
               <li>
                 <Link to="/">Home</Link>
@@ -87,13 +89,14 @@ export const AppRouter = () => {
               <li>
                 <button
                   onClick={handleLogout}
-                  style={{ border: "none", background: "#fff" }}
+                  style={{ border: "none", background: "none" }}
                 >
                   Logout
                 </button>
               </li>
             </ul>
           </nav>
+
           <Switch>
             <Route exact path="/">
               <Home />
@@ -118,7 +121,10 @@ export const AppRouter = () => {
           <nav className="navbar">
             <ul>
               <li>
-                <Link to="/admin">Admin Panel</Link>
+                <Link to="/admin">Dashboard</Link>
+              </li>
+              <li>
+                <Link to="/recentOrders">Recent Orders</Link>
               </li>
               <li>
                 <Link to="/create">Add Products</Link>
@@ -126,16 +132,26 @@ export const AppRouter = () => {
               <li>
                 <button
                   onClick={handleLogout}
-                  style={{ border: "none", background: "#fff" }}
+                  style={{ border: "none", background: "none" }}
                 >
                   Logout
                 </button>
               </li>
             </ul>
           </nav>
+          {/* <Navbar bg="dark" variant="dark">
+            <Nav className="ml-auto">
+              <Nav.Link href="#home">Home</Nav.Link>
+              <Nav.Link href="#features">Features</Nav.Link>
+              <Nav.Link href="#pricing">Pricing</Nav.Link>
+            </Nav>
+          </Navbar> */}
           <Switch>
             <Route path="/admin">
               <Admin />
+            </Route>
+            <Route path="/recentOrders">
+              <RecentOrders />
             </Route>
             <Route path="/create">
               <Create />

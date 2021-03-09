@@ -25,10 +25,10 @@ const Orders = () => {
       .catch((err) => console.log(err));
   }, []);
   console.log(globalState);
-  // this.setState({ :  });
+
   return (
-    <div>
-      <h1>Your orders</h1>
+    <div className="p-4">
+      <h1 className="text-center">Your orders</h1>
       <div className="d-flex flex-column-reverse">
         {globalState.userOrders.map(
           ({ orderDetails, orderTotal, remarks, address, phone }, index) => {
@@ -57,19 +57,16 @@ const Orders = () => {
                           </tr>
                         );
                       })}
-                      <tr>
-                        <td colSpan="2"></td>
-                      </tr>
                     </tbody>
-
+                    <br />
                     <tfoot>
                       <tr>
-                        <th colSpan="2">Total Amount</th>
-                        <td>{orderTotal}</td>
+                        <th>Total Amount</th>
+                        <td colSpan="2">{orderTotal}</td>
                       </tr>
                       <tr>
-                        <th colSpan="2">Remarks</th>
-                        <td>{remarks}</td>
+                        <th>Remarks</th>
+                        <td colSpan="2">{remarks}</td>
                       </tr>
                     </tfoot>
                   </Table>
