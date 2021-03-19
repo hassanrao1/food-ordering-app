@@ -13,6 +13,7 @@ export const GlobalStateProvider = ({ children }) => {
   const [data, setData] = useState({
     user: null,
     isLoggedIn: false,
+    // cart: JSON.parse(localStorage.getItem("cart")) || [],
     cart: [],
     totalAmount: 0,
     role: null,

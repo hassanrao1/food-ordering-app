@@ -68,29 +68,6 @@ const Signup = () => {
 
   return (
     <div className="text-center">
-      {/* <h1>Sign Up</h1>
-      <form
-        noValidate
-        onSubmit={(e) => {
-          e.preventDefault();
-          signup();
-        }}
-      >
-        Name: <input type="text" ref={name} required /> <br />
-        Email
-        <input
-          type="email"
-          ref={email}
-          required
-          onChange={(e) => setValidateEmail(e.target.value)}
-        />
-        <small id="validate"></small>
-        <br />
-        Password :
-        <input type="password" ref={password} required />
-        <br />
-        <button>Submit</button>
-      </form> */}
       <Card style={{ width: "20rem", margin: "0 auto" }} className="p-4 mt-4">
         <h1>Sign Up</h1>
         <Card.Body>

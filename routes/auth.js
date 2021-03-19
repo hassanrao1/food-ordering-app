@@ -5,6 +5,11 @@ const { userModel } = require("../dbrepo/index");
 const api = express.Router();
 const { SERVER_SECRET } = require("../core");
 // const client = process.env.POSTMARK;
+const { OAuth2Client } = require("google-auth-library");
+
+const client = new OAuth2Client(
+  "365725440376-0kid8u1c752gledmh2u1o095abcnc1ev.apps.googleusercontent.com"
+);
 
 // Signup
 api.post("/signup", (req, res, next) => {
@@ -102,7 +107,7 @@ api.post("/login", (req, res, next) => {
           if (isMatched) {
             console.log("password matched");
             // assign a token to user on successful login
-            var token = jwt.sign(
+            const token = jwt.sign(
               {
                 id: user._id,
                 name: user.name,
@@ -128,8 +133,7 @@ api.post("/login", (req, res, next) => {
             });
           } else {
             console.log("not matched");
-            res.send({
-              status: 401,
+            res.json({
               message: "incorrect password",
             });
           }
@@ -144,6 +148,96 @@ api.post("/login", (req, res, next) => {
       });
     }
   });
+});
+
+api.post("/googleLogin", (req, response) => {
+  const { tokenId } = req.body;
+  client
+    .verifyIdToken({
+      idToken: tokenId,
+      audience:
+        "365725440376-0kid8u1c752gledmh2u1o095abcnc1ev.apps.googleusercontent.com",
+    })
+    .then((res) => {
+      console.log("google login success", res.payload);
+      const { email_verified, email, name } = res.payload;
+      // console.log(email_verified);
+      if (email_verified) {
+        userModel.findOne({ email: email }, (err, user) => {
+          if (err) {
+            res.status(400).json({
+              error: "something wrong",
+            });
+          } else {
+            if (user) {
+              console.log(user);
+              const token = jwt.sign(
+                {
+                  id: user._id,
+                  name: user.name,
+                  email: user.email,
+                  role: user.role,
+                },
+                SERVER_SECRET
+              );
+              response.cookie("jToken", token, {
+                maxAge: 86_400_000,
+                httpOnly: true,
+              });
+              response.status(200).json({
+                message: "login success",
+                status: 200,
+                user: {
+                  name: user.name,
+                  email: user.email,
+                  role: user.role,
+                },
+              });
+            } else {
+              bcrypt.stringToHash(123).then(function (hashedPassword) {
+                var newUser = new userModel({
+                  name: name,
+                  email: email,
+                  password: hashedPassword,
+                  role: req.body.role ? req.body.role : "user",
+                });
+                newUser.save((err, data) => {
+                  if (err) {
+                    return res.status(500).json({
+                      message: "user create error, " + err,
+                    });
+                  }
+                  const token = jwt.sign(
+                    {
+                      id: data._id,
+                      name: data.name,
+                      email: data.email,
+                      role: data.role,
+                    },
+                    SERVER_SECRET
+                  );
+                  response.cookie("jToken", token, {
+                    maxAge: 86_400_000,
+                    httpOnly: true,
+                  });
+                  response.status(200).json({
+                    message: "Sign up success",
+                    status: 200,
+                    user: {
+                      name: data.name,
+                      email: data.email,
+                      role: data.role,
+                    },
+                  });
+                });
+              });
+            }
+          }
+        });
+      }
+    })
+    .catch((err) => console.log(err));
+  // console.log(tokenId);
 });
 
 api.post("/logout", (req, res, next) => {

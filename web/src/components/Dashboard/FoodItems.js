@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Button } from "react-bootstrap";
 import "./Dashboard.css";
 import {
@@ -21,6 +21,7 @@ const FoodItems = ({
   const setGlobalState = useSetGlobalState();
   const [addedToCard, setAddedToCart] = useState(inCart);
   const [cartText, setCartText] = useState("Add to cart");
+  let localCartStorage = [];
   const AddToCart = () => {
     const items = {
       name: name,
@@ -29,7 +30,7 @@ const FoodItems = ({
       id: id,
       actualPrice: actualPrice,
       halfKg: halfKg,
-      inCart: !inCart,
+      inCart: inCart,
     };
 
     setAddedToCart(true);
@@ -40,7 +41,11 @@ const FoodItems = ({
       totalAmount: totalAmount,
     }));
   };
-  console.log(globalState.cart);
+  // useEffect(() => {
+  //   localStorage.setItem("cart", JSON.stringify(globalState.cart));
+  //   // let localCart = JSON.parse(localStorage.getItem("cart")) || [];
+  //   // console.log(localCart);
+  // }, [globalState.cart]);
 
   return (
     <Card style={{ width: "18rem" }} className="foodCard text-center">

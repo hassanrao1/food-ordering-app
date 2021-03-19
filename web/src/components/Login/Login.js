@@ -7,6 +7,8 @@ import {
   useSetGlobalState,
 } from "../../globalState/GlobalState";
 import { Button, Card, Form } from "react-bootstrap";
+import GoogleLogin from "react-google-login";
+import { json } from "body-parser";
 axios.defaults.withCredentials = true;
 
 const Login = () => {
@@ -39,7 +41,7 @@ const Login = () => {
     }).then(
       (response) => {
         console.log("response", response);
-        console.log("role", response.data.user.role);
+        // console.log("role", response.data.user.role);
         alert(response.data.message);
         if (response.data.status === 200) {
           history.push("/dashboard");
@@ -53,7 +55,7 @@ const Login = () => {
       },
       (error) => {
         alert("error", error);
-        console.log("error data", error.response);
+        console.log("error data", JSON.stringify(error.message));
       }
     );
   };
@@ -80,30 +82,37 @@ const Login = () => {
       })
       .catch((err) => err);
   }, [validateEmail]);
-
+  const responseSuccessGoogle = (response) => {
+    console.log(response);
+    axios({
+      method: "post",
+      url: `${url}/auth/googleLogin`,
+      data: {
+        tokenId: response.tokenId,
+      },
+      withCredentials: true,
+    })
+      .then((res) => {
+        console.log(res);
+        alert(res.data.message);
+        window.location.reload();
+        if (response.data.status === 200) {
+          history.push("/");
+          setGlobalState((prevState) => ({
+            ...prevState,
+            // user: response.data.user,
+            isLoggedIn: !prevState.isLoggedIn,
+            role: response.data.user.role,
+          }));
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+  const responseErrorGoogle = (response) => {
+    console.log(response);
+  };
   return (
     <div className="text-center">
-      {/* <h1>Login</h1> */}
-      {/* <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          login();
-        }}
-      >
-        Email
-        <input
-          type="email"
-          ref={email}
-          required
-          onChange={(e) => setValidateEmail(e.target.value)}
-        />
-        <small id="validate"></small>
-        <br />
-        Password :
-        <input type="password" ref={password} required />
-        <br />
-        <button>Submit</button>
-      </form> */}
       <Card style={{ width: "20rem", margin: "0 auto" }} className="p-4 mt-4">
         <h1>Login</h1>
         <Card.Body>
@@ -142,6 +151,15 @@ const Login = () => {
               Login
             </Button>
           </Form>
+          <div style={{ margin: "10px" }}>
+            <GoogleLogin
+              clientId="365725440376-0kid8u1c752gledmh2u1o095abcnc1ev.apps.googleusercontent.com"
+              buttonText="Login With Google"
+              onSuccess={responseSuccessGoogle}
+              onFailure={responseErrorGoogle}
+              cookiePolicy={"single_host_origin"}
+            />
+          </div>
         </Card.Body>
       </Card>
     </div>
