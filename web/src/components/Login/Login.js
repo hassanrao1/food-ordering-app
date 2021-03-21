@@ -153,7 +153,7 @@ const Login = () => {
           </Form>
           <div style={{ margin: "10px" }}>
             <GoogleLogin
-              clientId="365725440376-0kid8u1c752gledmh2u1o095abcnc1ev.apps.googleusercontent.com"
+              clientId="99799831451-ol8cnqaglnvpopgg5k3m2p3vne53ig7k.apps.googleusercontent.com"
               buttonText="Login With Google"
               onSuccess={responseSuccessGoogle}
               onFailure={responseErrorGoogle}

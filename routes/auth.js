@@ -8,7 +8,7 @@ const { SERVER_SECRET } = require("../core");
 const { OAuth2Client } = require("google-auth-library");
 
 const client = new OAuth2Client(
-  "365725440376-0kid8u1c752gledmh2u1o095abcnc1ev.apps.googleusercontent.com"
+  "99799831451-ol8cnqaglnvpopgg5k3m2p3vne53ig7k.apps.googleusercontent.com"
 );
 
 // Signup
@@ -156,7 +156,7 @@ api.post("/googleLogin", (req, response) => {
     .verifyIdToken({
       idToken: tokenId,
       audience:
-        "365725440376-0kid8u1c752gledmh2u1o095abcnc1ev.apps.googleusercontent.com",
+        "99799831451-ol8cnqaglnvpopgg5k3m2p3vne53ig7k.apps.googleusercontent.com",
     })
     .then((res) => {
       console.log("google login success", res.payload);
