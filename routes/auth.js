@@ -186,7 +186,6 @@ api.post("/googleLogin", (req, response) => {
               });
               response.status(200).json({
                 message: "login success",
-                status: 200,
                 user: {
                   name: user.name,
                   email: user.email,
@@ -222,7 +221,6 @@ api.post("/googleLogin", (req, response) => {
                   });
                   response.status(200).json({
                     message: "Sign up success",
-                    status: 200,
                     user: {
                       name: data.name,
                       email: data.email,

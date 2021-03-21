@@ -95,9 +95,9 @@ const Login = () => {
       .then((res) => {
         console.log(res);
         alert(res.data.message);
+        window.location.reload();
         if (response.data.status === 200) {
-          window.location.reload();
-          // history.push("/");
+          history.push("/");
           setGlobalState((prevState) => ({
             ...prevState,
             // user: response.data.user,
