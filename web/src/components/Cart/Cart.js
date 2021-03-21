@@ -11,7 +11,9 @@ const Cart = () => {
   let address = useRef();
   let phone = useRef();
   let remarks = useRef();
-  const url = "http://localhost:5000";
+  // const url = "http://localhost:5000";
+  const url = "https://food-mania.herokuapp.com";
+
   const globalState = useGlobalState();
   const setGlobalState = useSetGlobalState();
   const [enough, setEnough] = useState(false);

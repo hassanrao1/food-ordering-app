@@ -8,7 +8,8 @@ export const useGlobalState = () => useContext(GlobalState);
 export const useSetGlobalState = () => useContext(GlobalStateUpdate);
 
 export const GlobalStateProvider = ({ children }) => {
-  const url = "http://localhost:5000";
+  const url = "https://food-mania.herokuapp.com";
+  // const url = "http://localhost:5000";
 
   const [data, setData] = useState({
     user: null,

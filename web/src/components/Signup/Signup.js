@@ -4,8 +4,8 @@ import { Button, Card, Form } from "react-bootstrap";
 import { Redirect, useHistory } from "react-router-dom";
 
 const Signup = () => {
-  const url = "http://localhost:5000";
-  // const url = "https://food-mania.herokuapp.com";
+  // const url = "http://localhost:5000";
+  const url = "https://food-mania.herokuapp.com";
 
   const history = useHistory();
   let name = useRef();

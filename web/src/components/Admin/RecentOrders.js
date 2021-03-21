@@ -7,7 +7,9 @@ import {
 } from "../../globalState/GlobalState";
 
 const RecentOrders = () => {
-  const url = "http://localhost:5000";
+  // const url = "http://localhost:5000";
+  const url = "https://food-mania.herokuapp.com";
+
   const globalState = useGlobalState();
   const setGlobalState = useSetGlobalState();
 

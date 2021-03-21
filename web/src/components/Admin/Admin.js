@@ -8,7 +8,8 @@ import {
 
 const Admin = () => {
   const [checkStatus, setCheckStatus] = useState(false);
-  const url = "http://localhost:5000";
+  const url = "https://food-mania.herokuapp.com";
+  // const url = "http://localhost:5000";
   const globalState = useGlobalState();
   const setGlobalState = useSetGlobalState();
 
