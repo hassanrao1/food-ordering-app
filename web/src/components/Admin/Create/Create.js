@@ -3,7 +3,8 @@ import { Form, Button } from "react-bootstrap";
 import axios from "axios";
 
 const Create = () => {
-  const url = "http://localhost:5000";
+  // const url = "http://localhost:5000";
+  const url = "https://food-mania.herokuapp.com";
 
   let productName = useRef();
   let productAmount = useRef();
