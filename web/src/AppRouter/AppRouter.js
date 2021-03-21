@@ -22,7 +22,9 @@ import Create from "../components/Admin/Create/Create";
 import RecentOrders from "../components/Admin/RecentOrders";
 
 export const AppRouter = () => {
-  const url = "http://localhost:5000";
+  // const url = "http://localhost:5000";
+  const url = "https://food-mania.herokuapp.com";
+
   const globalState = useGlobalState();
   const setGlobalState = useSetGlobalState();
   const handleLogout = () => {
