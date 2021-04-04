@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
+import url from "../url";
 
 const GlobalState = createContext();
 const GlobalStateUpdate = createContext();
@@ -8,7 +9,7 @@ export const useGlobalState = () => useContext(GlobalState);
 export const useSetGlobalState = () => useContext(GlobalStateUpdate);
 
 export const GlobalStateProvider = ({ children }) => {
-  const url = "https://food-mania.herokuapp.com";
+  // const url = "https://food-mania.herokuapp.com";
   // const url = "http://localhost:5000";
 
   const [data, setData] = useState({

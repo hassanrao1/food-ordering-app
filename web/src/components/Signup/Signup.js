@@ -2,10 +2,11 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
 import { Redirect, useHistory } from "react-router-dom";
+import url from "../../url";
 
 const Signup = () => {
   // const url = "http://localhost:5000";
-  const url = "https://food-mania.herokuapp.com";
+  // const url = "https://food-mania.herokuapp.com";
 
   const history = useHistory();
   let name = useRef();
@@ -68,7 +69,10 @@ const Signup = () => {
 
   return (
     <div className="text-center">
-      <Card style={{ width: "20rem", margin: "0 auto" }} className="p-4 mt-4">
+      <Card
+        style={{ width: "20rem", margin: "0 auto", boxShadow: "0 0" }}
+        className="p-4 mt-4"
+      >
         <h1>Sign Up</h1>
         <Card.Body>
           <Form

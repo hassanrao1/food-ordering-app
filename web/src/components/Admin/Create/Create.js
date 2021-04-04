@@ -1,10 +1,11 @@
 import React, { useEffect, useRef } from "react";
 import { Form, Button } from "react-bootstrap";
 import axios from "axios";
+import url from "../../../url";
 
 const Create = () => {
   // const url = "http://localhost:5000";
-  const url = "https://food-mania.herokuapp.com";
+  // const url = "https://food-mania.herokuapp.com";
 
   let productName = useRef();
   let productAmount = useRef();

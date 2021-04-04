@@ -6,13 +6,14 @@ import {
   useSetGlobalState,
 } from "../../globalState/GlobalState";
 import axios from "axios";
+import url from "../../url";
 
 const Cart = () => {
   let address = useRef();
   let phone = useRef();
   let remarks = useRef();
   // const url = "http://localhost:5000";
-  const url = "https://food-mania.herokuapp.com";
+  // const url = "https://food-mania.herokuapp.com";
 
   const globalState = useGlobalState();
   const setGlobalState = useSetGlobalState();

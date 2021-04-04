@@ -5,10 +5,11 @@ import {
   useGlobalState,
   useSetGlobalState,
 } from "../../globalState/GlobalState";
+import url from "../../url";
 
 const Admin = () => {
   const [checkStatus, setCheckStatus] = useState(false);
-  const url = "https://food-mania.herokuapp.com";
+  // const url = "https://food-mania.herokuapp.com";
   // const url = "http://localhost:5000";
   const globalState = useGlobalState();
   const setGlobalState = useSetGlobalState();

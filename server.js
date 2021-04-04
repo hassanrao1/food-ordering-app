@@ -10,6 +10,10 @@ const server = http.createServer(app);
 const authRoutes = require("./routes/auth");
 const jwt = require("jsonwebtoken");
 const { SERVER_SECRET } = require("./core/index");
+const passport = require("passport");
+const cookieSession = require("cookie-session");
+require("./passport-setup");
+
 const multer = require("multer");
 const storage = multer.diskStorage({
   // https://www.npmjs.com/package/multer#diskstorage
@@ -38,8 +42,15 @@ const { userModel, orderModel, productModel } = require("./dbrepo/index");
 
 app.use(bodyParser.json());
 app.use(morgan("dev"));
-
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(cookieParser());
+app.use(
+  cookieSession({
+    name: "test-session",
+    keys: ["key1", "key2"],
+  })
+);
 app.use(
   cors({
     origin: ["http://localhost:3000", "https://food-mania.herokuapp.com"],
@@ -47,17 +58,70 @@ app.use(
   })
 );
 
-// app.use((req, res, next) => {
-//   res.header("Access-Control-Allow-Origin: https://food-mania.herokuapp.com");
-//   res.header("Access-Control-Allow-Credentials: true");
-//   res.header("Access-Control-Allow-Methods: GET, POST");
-//   res.header("Access-Control-Allow-Headers: Content-Type, *");
-//   next();
-// });
-
 app.use("/", express.static(path.resolve(path.join(__dirname, "./web/build"))));
 
 app.use("/auth", authRoutes);
+
+// app.get("/failure", (req, res) => {
+//   res.send("failed to login");
+// });
+// app.get("/welcome", (req, res) => {
+//   // res.send(
+//   //   `welcome ${req.user.displayName}| email: ${req.user._json.email} | `
+//   // );
+//   res.send({
+//     message: "success",
+//     displayName: req.user.displayName,
+//     email: req.user._json.email,
+//     role: "user",
+//     status: 200,
+//   });
+
+//   console.log("welcome 31", req.user);
+//   console.log("welcome 32", req.user._json.email);
+// });
+// app.use(function (req, res, next) {
+//   if (req.user) {
+//     console.log("76 run");
+//   } else {
+//     console.log("78 error run");
+//   }
+// });
+app.get(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["email", "profile"] })
+);
+
+// app.get(
+//   "/auth/google/callback",
+//   passport.authenticate("google", {
+//     successRedirect: "/welcome",
+//     failureRedirect: "/failure",
+//   })
+// );
+app.get(
+  "/auth/google/callback",
+  passport.authenticate("google"),
+  (req, res) => {
+    const token = jwt.sign(
+      {
+        id: req.user.id,
+        name: req.user.name,
+        email: req.user.email,
+        role: req.user.role,
+      },
+      SERVER_SECRET
+    );
+
+    res.cookie("jToken", token, {
+      maxAge: 86_400_000,
+      httpOnly: true,
+    });
+
+    res.redirect("http://localhost:3000/#/dashboard");
+    // console.log("131", req.cookie);
+  }
+);
 
 // middleware;
 app.use(function (req, res, next) {
@@ -114,7 +178,7 @@ app.get("/profile", (req, res, next) => {
           userData: data,
         });
       } else {
-        res.status(500).send({
+        res.status(500).json({
           message: "server error",
         });
       }

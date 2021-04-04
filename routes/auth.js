@@ -11,6 +11,8 @@ const client = new OAuth2Client(
   "99799831451-ol8cnqaglnvpopgg5k3m2p3vne53ig7k.apps.googleusercontent.com"
 );
 
+// google login
+
 // Signup
 api.post("/signup", (req, res, next) => {
   // for postman
@@ -150,93 +152,93 @@ api.post("/login", (req, res, next) => {
   });
 });
 
-api.post("/googleLogin", (req, response) => {
-  const { tokenId } = req.body;
-  client
-    .verifyIdToken({
-      idToken: tokenId,
-      audience:
-        "99799831451-ol8cnqaglnvpopgg5k3m2p3vne53ig7k.apps.googleusercontent.com",
-    })
-    .then((res) => {
-      console.log("google login success", res.payload);
-      const { email_verified, email, name } = res.payload;
-      // console.log(email_verified);
-      if (email_verified) {
-        userModel.findOne({ email: email }, (err, user) => {
-          if (err) {
-            res.status(400).json({
-              error: "something wrong",
-            });
-          } else {
-            if (user) {
-              console.log(user);
-              const token = jwt.sign(
-                {
-                  id: user._id,
-                  name: user.name,
-                  email: user.email,
-                  role: user.role,
-                },
-                SERVER_SECRET
-              );
-              response.cookie("jToken", token, {
-                maxAge: 86_400_000,
-                httpOnly: true,
-              });
-              response.status(200).json({
-                message: "login success",
-                user: {
-                  name: user.name,
-                  email: user.email,
-                  role: user.role,
-                },
-              });
-            } else {
-              bcrypt.stringToHash(123).then(function (hashedPassword) {
-                var newUser = new userModel({
-                  name: name,
-                  email: email,
-                  password: hashedPassword,
-                  role: req.body.role ? req.body.role : "user",
-                });
-                newUser.save((err, data) => {
-                  if (err) {
-                    return res.status(500).json({
-                      message: "user create error, " + err,
-                    });
-                  }
-                  const token = jwt.sign(
-                    {
-                      id: data._id,
-                      name: data.name,
-                      email: data.email,
-                      role: data.role,
-                    },
-                    SERVER_SECRET
-                  );
-                  response.cookie("jToken", token, {
-                    maxAge: 86_400_000,
-                    httpOnly: true,
-                  });
-                  response.status(200).json({
-                    message: "Sign up success",
-                    user: {
-                      name: data.name,
-                      email: data.email,
-                      role: data.role,
-                    },
-                  });
-                });
-              });
-            }
-          }
-        });
-      }
-    })
-    .catch((err) => console.log(err));
-  // console.log(tokenId);
-});
+// api.post("/googleLogin", (req, response) => {
+//   const { tokenId } = req.body;
+//   client
+//     .verifyIdToken({
+//       idToken: tokenId,
+//       audience:
+//         "99799831451-ol8cnqaglnvpopgg5k3m2p3vne53ig7k.apps.googleusercontent.com",
+//     })
+//     .then((res) => {
+//       console.log("google login success", res.payload);
+//       const { email_verified, email, name } = res.payload;
+//       // console.log(email_verified);
+//       if (email_verified) {
+//         userModel.findOne({ email: email }, (err, user) => {
+//           if (err) {
+//             res.status(400).json({
+//               error: "something wrong",
+//             });
+//           } else {
+//             if (user) {
+//               console.log(user);
+//               const token = jwt.sign(
+//                 {
+//                   id: user._id,
+//                   name: user.name,
+//                   email: user.email,
+//                   role: user.role,
+//                 },
+//                 SERVER_SECRET
+//               );
+//               response.cookie("jToken", token, {
+//                 maxAge: 86_400_000,
+//                 httpOnly: true,
+//               });
+//               response.status(200).json({
+//                 message: "login success",
+//                 user: {
+//                   name: user.name,
+//                   email: user.email,
+//                   role: user.role,
+//                 },
+//               });
+//             } else {
+//               bcrypt.stringToHash(123).then(function (hashedPassword) {
+//                 var newUser = new userModel({
+//                   name: name,
+//                   email: email,
+//                   password: hashedPassword,
+//                   role: req.body.role ? req.body.role : "user",
+//                 });
+//                 newUser.save((err, data) => {
+//                   if (err) {
+//                     return res.status(500).json({
+//                       message: "user create error, " + err,
+//                     });
+//                   }
+//                   const token = jwt.sign(
+//                     {
+//                       id: data._id,
+//                       name: data.name,
+//                       email: data.email,
+//                       role: data.role,
+//                     },
+//                     SERVER_SECRET
+//                   );
+//                   response.cookie("jToken", token, {
+//                     maxAge: 86_400_000,
+//                     httpOnly: true,
+//                   });
+//                   response.status(200).json({
+//                     message: "Sign up success",
+//                     user: {
+//                       name: data.name,
+//                       email: data.email,
+//                       role: data.role,
+//                     },
+//                   });
+//                 });
+//               });
+//             }
+//           }
+//         });
+//       }
+//     })
+//     .catch((err) => console.log(err));
+//   // console.log(tokenId);
+// });
 
 api.post("/logout", (req, res, next) => {
   res.cookie("jToken", "", {
@@ -359,6 +361,7 @@ api.post("/forget-password-step-2", (req, res, next) => {
 });
 api.post("/logout", (req, res, next) => {
   res.cookie("jToken", "");
+  res.clearCookie("test-session");
   res.send("logout success");
 });
 

@@ -6,13 +6,14 @@ import {
 import axios from "axios";
 import "./Dashboard.css";
 import FoodItems from "./FoodItems";
+import url from "../../url";
 
 const Dashboard = () => {
   const globalState = useGlobalState();
   const setGlobalState = useSetGlobalState();
 
   // const url = "http://localhost:5000";
-  const url = "https://food-mania.herokuapp.com";
+  // const url = "https://food-mania.herokuapp.com";
 
   useEffect(() => {
     axios({

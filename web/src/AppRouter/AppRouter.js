@@ -20,10 +20,11 @@ import Admin from "../components/Admin/Admin";
 import Orders from "../components/Orders/Orders";
 import Create from "../components/Admin/Create/Create";
 import RecentOrders from "../components/Admin/RecentOrders";
+import url from "../url";
 
 export const AppRouter = () => {
   // const url = "http://localhost:5000";
-  const url = "https://food-mania.herokuapp.com";
+  // const url = "https://food-mania.herokuapp.com";
 
   const globalState = useGlobalState();
   const setGlobalState = useSetGlobalState();
@@ -77,7 +78,7 @@ export const AppRouter = () => {
           <nav className="navbar" bg="light" variant="light">
             <ul>
               <li>
-                <Link to="/">Home</Link>
+                <Link to="/profile">Home</Link>
               </li>
               <li>
                 <Link to="/dashboard">Dashboard</Link>
