@@ -199,7 +199,9 @@ const Login = () => {
               onFailure={responseErrorGoogle}
               cookiePolicy={"single_host_origin"} */}
             {/* /> */}
-            <a href="http://localhost:5000/auth/google">Login With Google</a>
+            <a href="https://food-mania.herokuapp.com/auth/google">
+              Login With Google
+            </a>
             {/* <button onClick={loginWithGoogle}>Login with google</button> */}
           </div>
         </Card.Body>

@@ -22,7 +22,8 @@ passport.use(
       clientID:
         "254667206131-4kbt2shjf3tkith644e7s5sqknp9absn.apps.googleusercontent.com",
       clientSecret: "-bfSK4mZs67PaJtg-308SeCk",
-      callbackURL: "http://localhost:5000/auth/google/callback",
+      // callbackURL: "http://localhost:5000/auth/google/callback",
+      callbackURL: "https://food-mania.herokuapp.com/auth/google/callback",
       passReqToCallback: true,
     },
     function (request, accessToken, refreshToken, profile, done) {

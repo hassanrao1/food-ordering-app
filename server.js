@@ -118,7 +118,7 @@ app.get(
       httpOnly: true,
     });
 
-    res.redirect("http://localhost:3000/#/dashboard");
+    res.redirect("https://food-mania.herokuapp.com/#/dashboard");
     // console.log("131", req.cookie);
   }
 );
