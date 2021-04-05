@@ -202,6 +202,10 @@ const Login = () => {
             <a href="https://food-mania.herokuapp.com/auth/google">
               Login With Google
             </a>
+            <br />
+            <a href="http://localhost:5000/auth/facebook">
+              Login With facebook
+            </a>
             {/* <button onClick={loginWithGoogle}>Login with google</button> */}
           </div>
         </Card.Body>

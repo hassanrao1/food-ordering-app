@@ -62,31 +62,7 @@ app.use("/", express.static(path.resolve(path.join(__dirname, "./web/build"))));
 
 app.use("/auth", authRoutes);
 
-// app.get("/failure", (req, res) => {
-//   res.send("failed to login");
-// });
-// app.get("/welcome", (req, res) => {
-//   // res.send(
-//   //   `welcome ${req.user.displayName}| email: ${req.user._json.email} | `
-//   // );
-//   res.send({
-//     message: "success",
-//     displayName: req.user.displayName,
-//     email: req.user._json.email,
-//     role: "user",
-//     status: 200,
-//   });
-
-//   console.log("welcome 31", req.user);
-//   console.log("welcome 32", req.user._json.email);
-// });
-// app.use(function (req, res, next) {
-//   if (req.user) {
-//     console.log("76 run");
-//   } else {
-//     console.log("78 error run");
-//   }
-// });
+// GOOGLE LOGIN
 app.get(
   "/auth/google",
   passport.authenticate("google", { scope: ["email", "profile"] })
@@ -120,6 +96,36 @@ app.get(
 
     res.redirect("https://food-mania.herokuapp.com/#/dashboard");
     // console.log("131", req.cookie);
+  }
+);
+app.get(
+  "/auth/facebook",
+  passport.authenticate("facebook", { scope: ["email"] })
+);
+
+app.get(
+  "/auth/facebook/callback",
+  passport.authenticate("facebook"),
+  function (req, res) {
+    const token = jwt.sign(
+      {
+        id: req.user.id,
+        name: req.user.name,
+        email: req.user.email,
+        role: req.user.role,
+      },
+      SERVER_SECRET
+    );
+
+    res.cookie("jToken", token, {
+      maxAge: 86_400_000,
+      httpOnly: true,
+    });
+
+    res.redirect("http://localhost:3000/#/dashboard");
+    // console.log("131", req.cookie);
+
+    // Successful authentication, redirect home.
   }
 );
 
