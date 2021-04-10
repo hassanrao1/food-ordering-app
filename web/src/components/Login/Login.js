@@ -7,16 +7,62 @@ import {
   useGlobalState,
   useSetGlobalState,
 } from "../../globalState/GlobalState";
-import cookie from "react-cookie";
-import { Button, Card, Form } from "react-bootstrap";
+import LockOpenIcon from "@material-ui/icons/LockOpen";
+import VpnKeyIcon from "@material-ui/icons/VpnKey";
+import FacebookIcon from "@material-ui/icons/Facebook";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+
+import {
+  Card,
+  CardContent,
+  CardActions,
+  Button,
+  Typography,
+  Snackbar,
+  TextField,
+  Link,
+} from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
 import GoogleLogin from "react-google-login";
-import { json } from "body-parser";
-import { signedCookies } from "cookie-parser";
+
 axios.defaults.withCredentials = true;
 
+const useStyles = makeStyles({
+  root: {
+    minWidth: 275,
+    height: "80vh",
+    maxWidth: 500,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    margin: "0 auto",
+    marginTop: "10px",
+    flexDirection: "column",
+  },
+  inputs: {
+    marginTop: "13px",
+  },
+  socialLogin: {
+    backgroundColor: "#E62E55",
+    width: 400,
+    borderRadius: "5px",
+    textDecoration: "none",
+    color: "white",
+    marginTop: "10px",
+    padding: "6px",
+    textAlign: "center",
+  },
+});
+
 const Login = () => {
-  // const url = "http://localhost:5000";
-  // const url = "https://food-mania.herokuapp.com";
+  const classes = useStyles();
+  const [message, setMessage] = useState("");
+  const [open, setOpen] = useState(false);
+  const [validateMessage, setValidateMessage] = useState("");
+
+  const handleClick = () => {
+    setOpen(true);
+  };
 
   const history = useHistory();
   const globalState = useGlobalState();
@@ -45,15 +91,18 @@ const Login = () => {
       (response) => {
         console.log("response", response);
         // console.log("role", response.data.user.role);
-        alert(response.data.message);
+        setMessage(response.data.message);
+
         if (response.data.status === 200) {
-          history.push("/dashboard");
-          setGlobalState((prevState) => ({
-            ...prevState,
-            // user: response.data.user,
-            isLoggedIn: !prevState.isLoggedIn,
-            role: response.data.user.role,
-          }));
+          setTimeout(() => {
+            history.push("/dashboard");
+            setGlobalState((prevState) => ({
+              ...prevState,
+              // user: response.data.user,
+              isLoggedIn: !prevState.isLoggedIn,
+              role: response.data.user.role,
+            }));
+          }, 3000);
         }
       },
       (error) => {
@@ -76,11 +125,9 @@ const Login = () => {
         console.log("validation", res.data.isFound);
         console.log("validation", res.data.data);
         if (res.data.data === null) {
-          document.getElementById("validate").innerText = "email not found";
-          email.current.style.border = "1px solid red";
+          setValidateMessage("email not found");
         } else if (res.data.data) {
-          email.current.style.border = "1px solid green";
-          document.getElementById("validate").innerText = "";
+          setValidateMessage("");
         }
       })
       .catch((err) => err);
@@ -151,67 +198,118 @@ const Login = () => {
 
   console.log(globalState);
   return (
-    <div className="text-center">
-      <Card style={{ width: "20rem", margin: "0 auto" }} className="p-4 mt-4">
-        <h1>Login</h1>
-        <Card.Body>
-          <Form
-            onSubmit={(e) => {
-              e.preventDefault();
-              login();
-            }}
+    <div>
+      <Card className={classes.root}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            login();
+          }}
+        >
+          <Typography variant="h4" align="center">
+            <VpnKeyIcon color="secondary" fontSize="large" />
+          </Typography>
+          <Typography variant="h4" align="center">
+            {"Login"}
+          </Typography>
+
+          <br />
+          <TextField
+            id="standard-basic"
+            type="email"
+            label="Enter email"
+            inputRef={email}
+            required
+            className={classes.inputs}
+            color="secondary"
+            onChange={(e) => setValidateEmail(e.target.value)}
+            style={{ width: 400 }}
+          />
+          <br />
+          <Typography className="text-muted" className="float-right">
+            {validateMessage}
+          </Typography>
+          <br />
+          <TextField
+            id="filled-password-input"
+            type="password"
+            label="password"
+            inputRef={password}
+            required
+            color="secondary"
+            className={classes.inputs}
+            style={{ width: 400 }}
+          />
+          <br />
+          <Button
+            type="submit"
+            variant="contained"
+            color="secondary"
+            onClick={handleClick}
+            fullWidth
+            className={classes.inputs}
+            style={{ marginTop: "30px" }}
           >
-            <Form.Group controlId="formBasicEmail">
-              <Form.Control
-                type="email"
-                placeholder="Enter email"
-                type="email"
-                ref={email}
-                required
-                onChange={(e) => setValidateEmail(e.target.value)}
-              />
-              <Form.Text
-                className="text-muted"
-                id="validate"
-                className="float-right"
-              ></Form.Text>
-            </Form.Group>
-
-            <Form.Group controlId="formBasicPassword">
-              <Form.Control
-                type="password"
-                placeholder="Password"
-                ref={password}
-                required
-              />
-            </Form.Group>
-
-            <Button variant="primary" type="submit" block>
-              Login hhh
-            </Button>
-          </Form>
-
-          <div style={{ margin: "10px" }}>
-            {/* <GoogleLogin
-              clientId="99799831451-ol8cnqaglnvpopgg5k3m2p3vne53ig7k.apps.googleusercontent.com"
-              buttonText="Login With Google"
-              onSuccess={responseSuccessGoogle}
-              onFailure={responseErrorGoogle}
-              cookiePolicy={"single_host_origin"} */}
-            {/* /> */}
-            <a href="https://food-mania.herokuapp.com/auth/google">
-              Login With Google
-            </a>
-            <br />
-            <a href="http://localhost:5000/auth/facebook">
-              Login With facebook
-            </a>
-            {/* <button onClick={loginWithGoogle}>Login with google</button> */}
-          </div>
-        </Card.Body>
+            LOGIN{" "}
+          </Button>
+        </form>
+        <Link
+          className={classes.socialLogin}
+          href="https://food-mania.herokuapp.com/auth/google"
+          style={{ textDecoration: "none", color: "#fff" }}
+        >
+          <Typography variant="button" align="right">
+            <LockOpenIcon style={{ marginRight: 15 }} />
+            Login With Google
+          </Typography>
+        </Link>
+        <Link
+          className={classes.socialLogin}
+          href="http://localhost:5000/auth/facebook"
+          style={{ textDecoration: "none", color: "#fff" }}
+        >
+          <Typography variant="button" align="right">
+            <FacebookIcon style={{ marginRight: 15 }} />
+            Login With Facebook
+          </Typography>
+        </Link>
       </Card>
+      {message && (
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center",
+          }}
+          open={open}
+          autoHideDuration={6000}
+        >
+          <Alert severity="success" variant="filled">
+            {message}
+          </Alert>
+        </Snackbar>
+      )}
     </div>
   );
 };
 
 export default Login;
+
+{
+  /* <GoogleLogin
+  clientId="99799831451-ol8cnqaglnvpopgg5k3m2p3vne53ig7k.apps.googleusercontent.com"
+  buttonText="Login With Google"
+  onSuccess={responseSuccessGoogle}
+  onFailure={responseErrorGoogle}
+  cookiePolicy={"single_host_origin"} */
+}
+{
+  /* /> */
+}
+{
+  /* 
+<br />
+<a href="http://localhost:5000/auth/facebook">
+  Login With facebook
+</a>
+<button onClick={loginWithGoogle}>Login with google</button> */
+}

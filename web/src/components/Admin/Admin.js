@@ -42,6 +42,20 @@ const Admin = () => {
       setCheckStatus(true);
     });
   };
+  const declineOrder = (id) => {
+    console.log(id);
+    axios({
+      method: "patch",
+      url: `${url}/declineOrder`,
+      data: {
+        id: id,
+      },
+    }).then((res) => {
+      console.log(res);
+      alert(res.data.message);
+      setCheckStatus(true);
+    });
+  };
 
   // console.log(mapOrders);
   console.log(globalState.allOrders);
@@ -137,9 +151,17 @@ const Admin = () => {
                               </tr>
                             </tfoot>
                           </Table>
+
                           <Button
                             className="float-right"
                             onClick={() => acceptOrder(_id)}
+                            variant="danger"
+                          >
+                            Decline
+                          </Button>
+                          <Button
+                            className="float-right"
+                            onClick={() => declineOrder(_id)}
                             variant="success"
                           >
                             Accept

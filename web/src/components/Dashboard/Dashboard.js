@@ -7,6 +7,7 @@ import axios from "axios";
 import "./Dashboard.css";
 import FoodItems from "./FoodItems";
 import url from "../../url";
+import { Grid } from "@material-ui/core";
 
 const Dashboard = () => {
   const globalState = useGlobalState();
@@ -46,12 +47,10 @@ const Dashboard = () => {
 
   console.log(globalState);
   return (
-    <div>
-      {globalState.user && (
-        <h1 className="text-center">Welcome {globalState.user.name} </h1>
-      )}
+    <Grid style={{ margin: "30px", padding: "30px" }}>
+      {globalState.user && <h1 className="text-center">PRODUCTS</h1>}
 
-      <div className="foodContainer">
+      <Grid container sm={12}>
         {globalState.products.map((food, i) => {
           // {localProducts.map((food, i) => {
           return (
@@ -69,8 +68,8 @@ const Dashboard = () => {
             />
           );
         })}
-      </div>
-    </div>
+      </Grid>
+    </Grid>
   );
 };
 

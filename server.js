@@ -12,6 +12,12 @@ const jwt = require("jsonwebtoken");
 const { SERVER_SECRET } = require("./core/index");
 const passport = require("passport");
 const cookieSession = require("cookie-session");
+const { nanoid } = require("nanoid");
+const ID = nanoid(10);
+console.log("====================================");
+console.log(ID);
+console.log("====================================");
+
 require("./passport-setup");
 
 const multer = require("multer");
@@ -214,6 +220,7 @@ app.post("/placeorder", (req, res) => {
           address: req.body.address,
           remarks: req.body.remarks,
           status: "pending",
+          orderCode: ID,
         })
         .then((data) => {
           console.log("order placed", data);
@@ -264,6 +271,38 @@ app.get("/myorders", (req, res) => {
     } else {
       res.send({
         message: "no orders",
+      });
+    }
+  });
+});
+app.post("/delProduct", (req, res) => {
+  productModel.findById(req.body.productId, {}, (err, data) => {
+    if (data) {
+      console.log("====================================");
+      console.log(data);
+      console.log("====================================");
+      res.status(200).json({
+        message: "deleted successfully",
+      });
+      data.remove();
+    } else {
+      console.log("====================================");
+      console.log(err);
+      console.log("====================================");
+    }
+  });
+});
+
+app.post("/declineOrder", (req, res) => {
+  orderModel.findById({ _id: req.body.id }, (err, data) => {
+    if (data) {
+      res.json({
+        message: "deleted successfully",
+      });
+      data.remove();
+    } else {
+      res.status(403).send({
+        message: "Could not find the order",
       });
     }
   });

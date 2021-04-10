@@ -1,6 +1,9 @@
 import React, { useRef, useState } from "react";
 
 import { Table, Button, Card, Form } from "react-bootstrap";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
+
 import {
   useGlobalState,
   useSetGlobalState,
@@ -149,9 +152,9 @@ const Cart = () => {
 
                 <td>{v.amount}rs</td>
                 <td>
-                  <button onClick={() => delItem(v.id, v.amount)}>
-                    Delete
-                  </button>
+                  <IconButton onClick={() => delItem(v.id, v.amount)}>
+                    <DeleteIcon />
+                  </IconButton>
                 </td>
               </tr>
             );

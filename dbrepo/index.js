@@ -54,6 +54,7 @@ var orderSchema = new mongoose.Schema({
   address: String,
   remarks: String,
   status: String,
+  orderCode: String,
   createdOn: { type: Date, default: Date.now },
 });
 var productSchema = new mongoose.Schema({

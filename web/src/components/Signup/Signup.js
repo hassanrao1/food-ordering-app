@@ -1,18 +1,54 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import { Button, Card, Form } from "react-bootstrap";
+// import { Button, Card, Form } from "react-bootstrap";
 import { Redirect, useHistory } from "react-router-dom";
 import url from "../../url";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import {
+  Card,
+  CardContent,
+  CardActions,
+  Button,
+  Typography,
+  Snackbar,
+} from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
+const useStyles = makeStyles({
+  root: {
+    minWidth: 275,
+    height: "80vh",
+    maxWidth: 500,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    margin: "0 auto",
+    marginTop: "10px",
+  },
+  inputs: {
+    marginTop: "13px",
+  },
+});
 
 const Signup = () => {
+  const classes = useStyles();
+  const [message, setMessage] = useState("");
+  const [open, setOpen] = useState(false);
+  const [validateMessage, setValidateMessage] = useState("");
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
   // const url = "http://localhost:5000";
   // const url = "https://food-mania.herokuapp.com";
 
   const history = useHistory();
   let name = useRef();
   let email = useRef();
-  console.log(email);
   let password = useRef();
+  console.log(email, name, password);
   //   let validation = useRef();
   //   console.log(validation.current);
 
@@ -32,13 +68,17 @@ const Signup = () => {
       (response) => {
         console.log("response", response);
         console.log("response doc", response.data.doc);
-        alert(response.data.message);
+        setMessage(response.data.message);
+        // alert(response.data.message);
         if (response.data.status === 200) {
-          history.push("/login");
+          setTimeout(() => {
+            history.push("/login");
+          }, 3000);
         }
       },
       (error) => {
         alert("error", error);
+        // setMessage(error);
         console.log("error data", error.response);
       }
     );
@@ -57,68 +97,92 @@ const Signup = () => {
       console.log("validation", res.data.isFound);
       console.log("validation", res.data.data);
       if (res.data.data === null) {
-        document.getElementById("validate").innerText = "";
-        email.current.style.border = "1px solid green";
+        setValidateMessage("");
       } else if (res.data.data) {
-        email.current.style.border = "1px solid red";
-        document.getElementById("validate").innerText =
-          "email already registered";
+        setValidateMessage("email already registered");
       }
     });
   }, [validateEmail]);
 
   return (
-    <div className="text-center">
-      <Card
-        style={{ width: "20rem", margin: "0 auto", boxShadow: "0 0" }}
-        className="p-4 mt-4"
-      >
-        <h1>Sign Up</h1>
-        <Card.Body>
-          <Form
-            onSubmit={(e) => {
-              e.preventDefault();
-              signup();
-            }}
+    <div>
+      <Card className={classes.root}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            signup();
+          }}
+        >
+          <Typography variant="h4" align="center">
+            <AccountCircleIcon color="secondary" fontSize="large" />
+          </Typography>
+          <Typography variant="h4" align="center">
+            {"Sign Up"}
+          </Typography>
+          <TextField
+            id="standard-basic"
+            label="Username"
+            inputRef={name}
+            className={classes.inputs}
+            required
+            margin="normal"
+            style={{ width: 400 }}
+            color="secondary"
+          />{" "}
+          <br />
+          <TextField
+            id="full-width-text-field"
+            type="email"
+            label="Enter email"
+            inputRef={email}
+            required
+            className={classes.inputs}
+            style={{ width: 400 }}
+            color="secondary"
+            onChange={(e) => setValidateEmail(e.target.value)}
+          />
+          <br />
+          <Typography className="text-muted" className="float-right">
+            {validateMessage}
+          </Typography>
+          <br />
+          <TextField
+            id="filled-password-input"
+            type="password"
+            label="password"
+            inputRef={password}
+            required
+            color="secondary"
+            style={{ width: 400 }}
+            fullWidth
+          />
+          <br />
+          <Button
+            type="submit"
+            variant="contained"
+            color="secondary"
+            onClick={handleClick}
+            fullWidth
+            className={classes.inputs}
           >
-            <Form.Group>
-              <Form.Control
-                type="text"
-                placeholder="Normal text"
-                ref={name}
-                required
-              />
-            </Form.Group>
-            <Form.Group controlId="formBasicEmail">
-              <Form.Control
-                type="email"
-                placeholder="Enter email"
-                ref={email}
-                required
-                onChange={(e) => setValidateEmail(e.target.value)}
-              />
-              <Form.Text
-                className="text-muted"
-                id="validate"
-                className="float-right"
-              ></Form.Text>
-            </Form.Group>
-
-            <Form.Group controlId="formBasicPassword">
-              <Form.Control
-                type="password"
-                placeholder="Password"
-                ref={password}
-                required
-              />
-            </Form.Group>
-
-            <Button variant="primary" type="submit" block>
-              Submit
-            </Button>
-          </Form>
-        </Card.Body>
+            Register{" "}
+          </Button>
+        </form>
       </Card>
+      {message && (
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center",
+          }}
+          open={open}
+          autoHideDuration={6000}
+        >
+          <Alert severity="success" variant="filled">
+            {message}
+          </Alert>
+        </Snackbar>
+      )}
     </div>
   );
 };

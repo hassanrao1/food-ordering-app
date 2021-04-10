@@ -1,10 +1,34 @@
 import React, { useEffect, useState } from "react";
-import { Card, Button } from "react-bootstrap";
+// import { Card, Button } from "react-bootstrap";
 import "./Dashboard.css";
 import {
   useGlobalState,
   useSetGlobalState,
 } from "../../globalState/GlobalState";
+import Grid from "@material-ui/core/Grid";
+import { makeStyles } from "@material-ui/core/styles";
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  Button,
+  IconButton,
+  CardActions,
+} from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    maxWidth: 345,
+  },
+  media: {
+    height: 0,
+    paddingTop: "56.25%", // 16:9
+  },
+  card: {
+    margin: 10,
+  },
+}));
 
 const FoodItems = ({
   name,
@@ -21,6 +45,8 @@ const FoodItems = ({
   const setGlobalState = useSetGlobalState();
   const [addedToCard, setAddedToCart] = useState(inCart);
   const [cartText, setCartText] = useState("Add to cart");
+  const classes = useStyles();
+
   let localCartStorage = [];
   const AddToCart = () => {
     const items = {
@@ -48,22 +74,36 @@ const FoodItems = ({
   // }, [globalState.cart]);
 
   return (
-    <Card style={{ width: "18rem" }} className="foodCard text-center">
-      <Card.Img variant="top" src={image} height="150px" />
-      <Card.Body>
-        <Card.Title>{name}</Card.Title>
-        <Card.Text>{actualPrice}rs</Card.Text>
-        <Card.Text>
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Minus et
-          iste suscipit officiis tempora ad ea, voluptate totam labore
-          laudantium ex eum quidem asperiores unde similique numquam eligendi
-          maiores dolorum.
-        </Card.Text>
-        <Button variant="primary" disabled={addedToCard} onClick={AddToCart}>
-          {cartText}
-        </Button>
-      </Card.Body>
-    </Card>
+    <Grid container sm={12} md={6} lg={3} alignItems="center" justify="center">
+      <Card className={classes.root} className={classes.card}>
+        <CardMedia
+          className={classes.media}
+          image={image}
+          title="Paella dish"
+        />
+        <CardContent>
+          <Typography variant="h4">{name}</Typography>
+          <Typography variant="subtitle">{actualPrice}</Typography>
+          <Typography variant="body2" color="textSecondary" component="p">
+            This impressive paella is a perfect party dish and a fun meal to
+            cook together with your guests. Add 1 cup of frozen peas along with
+            the mussels, if you like.
+          </Typography>
+        </CardContent>
+        <CardActions disableSpacing>
+          <IconButton aria-label="add to favorites">
+            <Button
+              variant="contained"
+              disabled={addedToCard}
+              color="secondary"
+              onClick={AddToCart}
+            >
+              {cartText}
+            </Button>
+          </IconButton>
+        </CardActions>
+      </Card>
+    </Grid>
   );
 };
 
