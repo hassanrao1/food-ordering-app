@@ -293,7 +293,7 @@ app.post("/delProduct", (req, res) => {
   });
 });
 
-app.post("/declineOrder", (req, res) => {
+app.patch("/declineOrder", (req, res) => {
   orderModel.findById({ _id: req.body.id }, (err, data) => {
     if (data) {
       res.json({

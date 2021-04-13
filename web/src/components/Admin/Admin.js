@@ -39,6 +39,7 @@ const Admin = () => {
       },
     }).then((res) => {
       console.log(res);
+      alert(res.data.message);
       setCheckStatus(true);
     });
   };
@@ -154,14 +155,14 @@ const Admin = () => {
 
                           <Button
                             className="float-right"
-                            onClick={() => acceptOrder(_id)}
+                            onClick={() => declineOrder(_id)}
                             variant="danger"
                           >
                             Decline
                           </Button>
                           <Button
                             className="float-right"
-                            onClick={() => declineOrder(_id)}
+                            onClick={() => acceptOrder(_id)}
                             variant="success"
                           >
                             Accept
