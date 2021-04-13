@@ -265,7 +265,7 @@ const Login = () => {
         </Link>
         <Link
           className={classes.socialLogin}
-          href="http://localhost:5000/auth/facebook"
+          href="https://food-mania.herokuapp.com/auth/facebook"
           style={{ textDecoration: "none", color: "#fff" }}
         >
           <Typography variant="button" align="right">
