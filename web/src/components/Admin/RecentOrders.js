@@ -45,9 +45,10 @@ const RecentOrders = () => {
           allOrders: res.data.orders,
           // totalAmount:res.data.orderTotal
         }));
+        setFilteredOrders(res.data.orders);
       })
       .catch((err) => console.log(err));
-  }, [filteredOrders]);
+  }, []);
 
   const pendingOrders = globalState.allOrders.filter((getStatus) => {
     return getStatus.status === "accepted";
@@ -56,7 +57,7 @@ const RecentOrders = () => {
     if (!search.current.value) return;
 
     const filterOrders = pendingOrders.filter((order) => {
-      return order.email.toLowerCase().includes(search.current.value);
+      return order.orderCode.toLowerCase().includes(search.current.value);
     });
     setFilteredOrders(filterOrders);
 
@@ -91,6 +92,7 @@ const RecentOrders = () => {
               name,
               _id,
               status,
+              orderCode,
             },
             index
           ) => {
@@ -122,6 +124,10 @@ const RecentOrders = () => {
                       </tbody>
                       <h4>User Details</h4>
                       <tfoot>
+                        <tr>
+                          <th>Order Code</th>
+                          <td colSpan="3">{orderCode}</td>
+                        </tr>
                         <tr>
                           <th>Total Amount</th>
                           <td colSpan="3">{orderTotal}</td>

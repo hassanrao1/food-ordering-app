@@ -6,6 +6,7 @@ import {
   useSetGlobalState,
 } from "../../globalState/GlobalState";
 import url from "../../url";
+import Empty from "../screens/Empty";
 
 const Admin = () => {
   const [checkStatus, setCheckStatus] = useState(false);
@@ -177,7 +178,7 @@ const Admin = () => {
           )}
         </div>
       ) : (
-        "No Orders"
+        <Empty />
       )}
     </div>
   );

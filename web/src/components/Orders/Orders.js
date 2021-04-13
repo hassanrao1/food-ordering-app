@@ -16,8 +16,6 @@ import {
 import url from "../../url";
 
 const Orders = () => {
-  // const url = "http://localhost:5000";
-  // const url = "https://food-mania.herokuapp.com";
   const [isOrder, setOrder] = useState(false);
 
   const globalState = useGlobalState();
