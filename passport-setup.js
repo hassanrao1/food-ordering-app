@@ -64,7 +64,7 @@ passport.use(
     {
       clientID: "2746198235692944",
       clientSecret: "7bf68c5a80cc7efa4463b270b96b65c3",
-      callbackURL: "http://localhost:5000/auth/facebook/callback",
+      callbackURL: "https://food-mania.herokuapp.com/auth/facebook/callback",
       profileFields: ["id", "displayName", "name", "emails"],
     },
     function (request, accessToken, refreshToken, profile, done) {
