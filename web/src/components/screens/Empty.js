@@ -13,7 +13,7 @@ const Empty = () => {
         style={{ height: "90vh" }}
       >
         <div>
-          <Typography variant="h3" color="secondary">
+          <Typography variant="h2" color="secondary">
             No Orders
           </Typography>{" "}
         </div>

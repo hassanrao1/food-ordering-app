@@ -45,7 +45,10 @@ const RecentOrders = () => {
           allOrders: res.data.orders,
           // totalAmount:res.data.orderTotal
         }));
-        setFilteredOrders(res.data.orders);
+        if (search.current.value === null) {
+          setFilteredOrders(pendingOrders);
+          return;
+        }
       })
       .catch((err) => console.log(err));
   }, []);
@@ -55,10 +58,10 @@ const RecentOrders = () => {
   });
   const handleSearch = () => {
     if (!search.current.value) return;
-
     const filterOrders = pendingOrders.filter((order) => {
       return order.orderCode.toLowerCase().includes(search.current.value);
     });
+
     setFilteredOrders(filterOrders);
 
     console.log(filteredOrders);
@@ -72,7 +75,7 @@ const RecentOrders = () => {
           <TextField
             required
             id="search"
-            label="Search order by customer email"
+            label="Search order by order code"
             onChange={handleSearch}
             inputRef={search}
           />
@@ -97,7 +100,7 @@ const RecentOrders = () => {
             index
           ) => {
             return (
-              <Card>
+              <Card key={index}>
                 <div className="p-4">
                   <h4>Order Details</h4>
                   <div>

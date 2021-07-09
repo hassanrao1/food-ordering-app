@@ -102,7 +102,7 @@ const Login = () => {
               isLoggedIn: !prevState.isLoggedIn,
               role: response.data.user.role,
             }));
-          }, 3000);
+          }, 1000);
         }
       },
       (error) => {
